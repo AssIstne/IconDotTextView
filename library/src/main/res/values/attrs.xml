@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IconDotTextView">
+        <attr name="icon" format="reference"/>
+        <attr name="icon_size" format="dimension"/>
+        <attr name="icon_width" format="dimension"/>
+        <attr name="icon_height" format="dimension"/>
+        <attr name="spacing" format="dimension"/>
+        <attr name="direction" format="enum">
+            <enum name="row" value="1"/>
+            <enum name="row_reverse" value="2"/>
+            <enum name="column" value="4"/>
+            <enum name="column_reverse" value="8"/>
+        </attr>
+        <attr name="text" format="string"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="textColor" format="color"/>
+        <attr name="dot_size" format="dimension"/>
+        <attr name="dot_color" format="color"/>
+        <attr name="dot_text" format="string"/>
+        <attr name="dot_textSize" format="string"/>
+        <attr name="dot_textColor" format="color"/>
+        <attr name="dot_alignTo" format="enum">
+            <enum name="top" value="1"/>
+            <enum name="right" value="2"/>
+            <enum name="bottom" value="4"/>
+            <enum name="left" value="8"/>
+        </attr>
+        <attr name="dot_marginTop" format="dimension"/>
+        <attr name="dot_marginRight" format="dimension"/>
+        <attr name="dot_marginBottom" format="dimension"/>
+        <attr name="dot_marginLeft" format="dimension"/>
+    </declare-styleable>
+</resources>
