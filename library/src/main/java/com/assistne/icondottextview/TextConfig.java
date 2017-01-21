@@ -29,6 +29,12 @@ public class TextConfig {
         }
     }
 
+    public TextConfig(String text, int size, @ColorInt int color) {
+        this.text = text;
+        this.size = size;
+        this.color = color;
+    }
+
     public int getWidth() {
         return 100;
     }

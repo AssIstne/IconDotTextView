@@ -43,9 +43,7 @@ public class DotConfig {
     int marginBottom = DEFAULT_MARGIN;
     int marginLeft = DEFAULT_MARGIN;
 
-    String text;
-    int textSize = DEFAULT_TEXT_SIZE;
-    @ColorInt int textColor = DEFAULT_TEXT_COLOR;
+    TextConfig textConfig;
 
     public DotConfig(TypedArray typedArray) {
         if (typedArray != null) {
@@ -56,9 +54,10 @@ public class DotConfig {
             marginRight = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginRight, DEFAULT_MARGIN);
             marginBottom = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginBottom, DEFAULT_MARGIN);
             marginLeft = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginLeft, DEFAULT_MARGIN);
-            text = typedArray.getString(R.styleable.IconDotTextView_dot_text);
-            textSize = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_textSize, DEFAULT_TEXT_SIZE);
-            textColor = typedArray.getColor(R.styleable.IconDotTextView_dot_textColor, DEFAULT_TEXT_COLOR);
+            String text = typedArray.getString(R.styleable.IconDotTextView_dot_text);
+            int textSize = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_textSize, DEFAULT_TEXT_SIZE);
+            int textColor = typedArray.getColor(R.styleable.IconDotTextView_dot_textColor, DEFAULT_TEXT_COLOR);
+            textConfig = new TextConfig(text, textSize, textColor);
         }
     }
 
