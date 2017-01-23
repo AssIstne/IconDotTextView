@@ -12,13 +12,35 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.assistne.example.MainActivity">
 
-    <com.assistne.icondottextview.IconDotTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        app:direction="row"
-        app:spacing="10dp"
-        android:paddingLeft="40dp"
-        android:paddingTop="40dp"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        >
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ROW"
+            android:onClick="toRow"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ROW REVERSE"
+            android:onClick="toRowReverse"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="COLUMN"
+            android:onClick="toColumn"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="COLUMN REVERSE"
+            android:onClick="toColumnReverse"
+            />
+    </LinearLayout>
 </RelativeLayout>
