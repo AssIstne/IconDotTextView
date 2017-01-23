@@ -11,8 +11,8 @@ import android.support.annotation.DrawableRes;
 // TODO: 17/1/20 改变了图片的情况
 // TODO: 17/1/20 使用hint改变图片颜色
 
-public class IconConfig {
-    private static final int DEFAULT_SIZE = 10;
+public class IconConfig implements Config {
+    private static final int DEFAULT_SIZE = 40;
 
     private int size = DEFAULT_SIZE;
     private int width = DEFAULT_SIZE;
@@ -36,6 +36,26 @@ public class IconConfig {
 
     public int getWidth() {
         return width != DEFAULT_SIZE ? width : size;
+    }
+
+    @Override
+    public int getDesiredHeight() {
+        return width != DEFAULT_SIZE ? width : size;
+    }
+
+    @Override
+    public int getDesiredWidth() {
+        return height != DEFAULT_SIZE ? height : size;
+    }
+
+    @Override
+    public void setMaxWidth(int maxWidth) {
+
+    }
+
+    @Override
+    public void setMaxHeight(int maxHeight) {
+
     }
 
     public int getHeight() {

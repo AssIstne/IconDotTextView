@@ -1,6 +1,7 @@
 package com.assistne.icondottextview;
 
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.ColorInt;
@@ -17,14 +18,15 @@ import android.text.TextUtils;
 // TODO: 17/1/20 文本改变的情况
 
 public class TextConfig implements Config {
+    private static final String TAG = "#TextConfig";
 
     private static final int DEFAULT_SIZE = 36;
     @ColorInt
     private static final int DEFAULT_COLOR = Color.RED;
-    private static final int DEAFULT_MAX_WIDTH = 400;
+    private static final int DEFAULT_MAX_WIDTH = Integer.MAX_VALUE;
 
     int size = DEFAULT_SIZE;
-    int maxWidth = DEAFULT_MAX_WIDTH;
+    int maxWidth = DEFAULT_MAX_WIDTH;
     @ColorInt int color = DEFAULT_COLOR;
     String text;
 
@@ -33,9 +35,9 @@ public class TextConfig implements Config {
 
     public TextConfig(TypedArray typedArray) {
         if (typedArray != null) {
-            size = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_size, DEFAULT_SIZE);
-            color = typedArray.getColor(R.styleable.IconDotTextView_dot_color, DEFAULT_COLOR);
-            text = typedArray.getString(R.styleable.IconDotTextView_dot_text);
+            size = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_textSize, DEFAULT_SIZE);
+            color = typedArray.getColor(R.styleable.IconDotTextView_textColor, DEFAULT_COLOR);
+            text = typedArray.getString(R.styleable.IconDotTextView_text);
         }
         init();
     }
@@ -60,18 +62,57 @@ public class TextConfig implements Config {
 
     private void initLayout() {
         if (!TextUtils.isEmpty(text)) {
-            mLayout = new StaticLayout(text, mTextPaint, 200, Layout.Alignment.ALIGN_CENTER, 1f, 0f, true);
+            int outerWidth = getWidth();
+            mLayout = new StaticLayout(text, 0, text.length(),
+                    mTextPaint, outerWidth, Layout.Alignment.ALIGN_CENTER,
+                    1f, 0f, true,
+                    TextUtils.TruncateAt.MIDDLE, outerWidth);
         }
     }
 
 
     public int getWidth() {
-//        int desiredWidth = (int) Math.ceil(Layout.getDesiredWidth(text, mTextPaint));
-//        return Math.min(desiredWidth, maxWidth);
-        return 100;
+        if (!TextUtils.isEmpty(text)) {
+            int desiredWidth = (int) Math.ceil(Layout.getDesiredWidth(text, mTextPaint));
+            return Math.min(desiredWidth, maxWidth);
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getDesiredHeight() {
+        return mLayout == null ? 0 : mLayout.getHeight();
+    }
+
+    @Override
+    public int getDesiredWidth() {
+        if (!TextUtils.isEmpty(text)) {
+            return (int) Math.ceil(Layout.getDesiredWidth(text, mTextPaint));
+        } else {
+            return 0;
+        }
     }
 
     public int getHeight() {
-        return 50;
+        return mLayout == null ? 0 : mLayout.getHeight();
     }
+
+    public void draw(Canvas canvas) {
+        if (mLayout != null) {
+            mLayout.draw(canvas);
+        }
+    }
+
+    public void setMaxWidth(int maxWidth) {
+        this.maxWidth = maxWidth;
+        mLayout = null;
+        initLayout();
+    }
+
+    @Override
+    public void setMaxHeight(int maxHeight) {
+
+    }
+
 }

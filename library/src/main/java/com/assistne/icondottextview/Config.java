@@ -7,4 +7,8 @@ package com.assistne.icondottextview;
 public interface Config {
     int getHeight();
     int getWidth();
+    int getDesiredHeight();
+    int getDesiredWidth();
+    void setMaxWidth(int maxWidth);
+    void setMaxHeight(int maxHeight);
 }
