@@ -1,5 +1,6 @@
 package com.assistne.icondottextview;
 
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -28,7 +29,7 @@ public class TextConfig implements Config {
 
     int size = DEFAULT_SIZE;
     int maxWidth = DEFAULT_MAX_WIDTH;
-    @ColorInt int color = DEFAULT_COLOR;
+    private ColorStateList color;
     String text;
 
     private TextPaint mTextPaint;
@@ -37,7 +38,10 @@ public class TextConfig implements Config {
     public TextConfig(TypedArray typedArray) {
         if (typedArray != null) {
             size = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_textSize, DEFAULT_SIZE);
-            color = typedArray.getColor(R.styleable.IconDotTextView_textColor, DEFAULT_COLOR);
+            color = typedArray.getColorStateList(R.styleable.IconDotTextView_textColor);
+            if (color == null) {
+                color = ColorStateList.valueOf(DEFAULT_COLOR);
+            }
             text = typedArray.getString(R.styleable.IconDotTextView_text);
         }
         init();
@@ -46,7 +50,7 @@ public class TextConfig implements Config {
     public TextConfig(String text, int size, @ColorInt int color) {
         this.text = text;
         this.size = size;
-        this.color = color;
+        this.color = ColorStateList.valueOf(color);
         init();
     }
 
@@ -57,7 +61,7 @@ public class TextConfig implements Config {
 
     private void initPaint() {
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setColor(color);
+        mTextPaint.setColor(DEFAULT_COLOR);
         mTextPaint.setTextSize(size);
     }
 
@@ -101,6 +105,7 @@ public class TextConfig implements Config {
 
     public void draw(@NonNull Canvas canvas) {
         if (mLayout != null) {
+            mTextPaint.setColor(color.getColorForState(mTextPaint.drawableState, DEFAULT_COLOR));
             mLayout.draw(canvas);
         }
     }
@@ -118,5 +123,6 @@ public class TextConfig implements Config {
 
     @Override
     public void setState(int[] state) {
+        mTextPaint.drawableState = state;
     }
 }

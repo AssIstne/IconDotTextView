@@ -199,6 +199,7 @@ public class IconDotTextView extends View {
     }
 
     private void drawText(Canvas canvas) {
+        mTextConfig.setState(getDrawableState());
         final int contentHeight = mIconConfig.getHeight() + mSpacing + mTextConfig.getHeight();
         final int height = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
         final int width = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
