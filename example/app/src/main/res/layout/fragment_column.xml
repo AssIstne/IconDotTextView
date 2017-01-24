@@ -35,6 +35,7 @@
                 app:textSize="20sp"
                 app:text="ABC中文123"
                 app:icon="@drawable/ic_email_black_12dp"
+                app:textColor="@color/selector_text"
                 />
             <com.assistne.icondottextview.IconDotTextView
                 android:layout_width="match_parent"
