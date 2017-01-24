@@ -15,7 +15,9 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Created by assistne on 17/1/20.
  */
-
+// TODO: 17/1/24 Dot相对边界布局和相对icon布局
+// TODO: 17/1/24 大小不规范时的处理, 保证text的显示?
+// TODO: 17/1/24 对外接口, 代码改变状态
 public class IconDotTextView extends View {
     private static final String TAG = "#IconDotTextView";
     private static final int ALIGN_TOP = 1;

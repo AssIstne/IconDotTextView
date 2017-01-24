@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
  */
 // TODO: 17/1/20 文本长度
 // TODO: 17/1/20 区分有文字和无文字
-// TODO: 17/1/20 文本属性抽象出来, 一起使用TextConfig
+// TODO: 17/1/24 文本不能超出dot范围
 public class DotConfig implements Config {
     private static final int DEFAULT_SIZE = 10;
     @ColorInt private static final int DEFAULT_COLOR = Color.RED;
