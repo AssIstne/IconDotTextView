@@ -28,6 +28,7 @@
             app:spacing="10dp"
             app:textSize="20sp"
             app:text="ABC中文123"
+            app:icon="@drawable/ic_email_black_12dp"
             />
         <com.assistne.icondottextview.IconDotTextView
             android:layout_width="match_parent"
@@ -42,6 +43,8 @@
             app:spacing="10dp"
             app:textSize="20sp"
             app:text="ABC中文123"
+            app:icon="@drawable/ic_shopping_cart_black_48dp"
+            app:icon_size="32dp"
             />
         <com.assistne.icondottextview.IconDotTextView
             android:layout_width="30dp"

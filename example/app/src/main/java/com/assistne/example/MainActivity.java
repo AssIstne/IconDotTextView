@@ -19,9 +19,9 @@ public class MainActivity extends AppCompatActivity {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return new RowFragment();
-                    case 1:
                         return new ColumnFragment();
+                    case 1:
+                        return new RowFragment();
                     case 2:
                         return new RowReverseFragment();
                     default:
