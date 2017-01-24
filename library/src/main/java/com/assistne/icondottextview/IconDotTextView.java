@@ -18,6 +18,10 @@ import java.lang.annotation.RetentionPolicy;
 
 public class IconDotTextView extends View {
     private static final String TAG = "#IconDotTextView";
+    private static final int ALIGN_TOP = 1;
+    private static final int ALIGN_RIGHT = 2;
+    private static final int ALIGN_BOTTOM = 4;
+    private static final int ALIGN_LEFT = 8;
     private static final int DEFAULT_SPACING = 10;
     private static final int ROW = 1;
     private static final int ROW_REVERSE = 2;
@@ -27,6 +31,23 @@ public class IconDotTextView extends View {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ROW, ROW_REVERSE, COLUMN, COLUMN_REVERSE})
     public @interface Direction{}
+
+    public static final int POSITION_LEFT_TOP = 0;
+    public static final int POSITION_LEFT_BOTTOM = 1;
+    public static final int POSITION_RIGHT_TOP = 2;
+    public static final int POSITION_RIGHT_BOTTOM = 3;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({POSITION_LEFT_TOP, POSITION_LEFT_BOTTOM, POSITION_RIGHT_TOP, POSITION_RIGHT_BOTTOM})
+    public @interface DotPosition {}
+    @DotPosition private static final int DEFAULT_DOT_POSITION = POSITION_RIGHT_TOP;
+    private static final int DEFAULT_DOT_MARGIN = 10;
+
+    @DotPosition int mDotPosition = DEFAULT_DOT_POSITION;
+    private int mDotMarginTop = DEFAULT_DOT_MARGIN;
+    private int mDotMarginRight = DEFAULT_DOT_MARGIN;
+    private int mDotMarginBottom = DEFAULT_DOT_MARGIN;
+    private int mDotMarginLeft = DEFAULT_DOT_MARGIN;
 
     private int mSpacing;
     @Direction
@@ -51,6 +72,11 @@ public class IconDotTextView extends View {
         mSpacing = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_spacing, DEFAULT_SPACING);
         @Direction int direction = typedArray.getInt(R.styleable.IconDotTextView_direction, COLUMN);
         mDirection = direction;
+        mDotPosition = getPositionFromArray(typedArray);
+        mDotMarginTop = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginTop, DEFAULT_DOT_MARGIN);
+        mDotMarginRight = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginRight, DEFAULT_DOT_MARGIN);
+        mDotMarginBottom = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginBottom, DEFAULT_DOT_MARGIN);
+        mDotMarginLeft = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginLeft, DEFAULT_DOT_MARGIN);
         mDotConfig = new DotConfig(typedArray);
         mIconConfig = new IconConfig(context, typedArray);
         mTextConfig = new TextConfig(typedArray);
@@ -60,6 +86,24 @@ public class IconDotTextView extends View {
         mPaint.setColor(Color.DKGRAY);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(4);
+    }
+
+    @DotPosition
+    private int getPositionFromArray(TypedArray typedArray) {
+        int alignInfo = typedArray.getInt(R.styleable.IconDotTextView_dot_alignTo, ALIGN_TOP | ALIGN_RIGHT);
+        if ((alignInfo & ALIGN_TOP) != 0) {
+            if ((alignInfo & ALIGN_RIGHT) != 0) {
+                return POSITION_RIGHT_TOP;
+            } else {
+                return POSITION_LEFT_TOP;
+            }
+        } else {
+            if ((alignInfo & ALIGN_RIGHT) != 0) {
+                return POSITION_RIGHT_BOTTOM;
+            } else {
+                return POSITION_LEFT_BOTTOM;
+            }
+        }
     }
 
     @Override
@@ -165,6 +209,7 @@ public class IconDotTextView extends View {
     protected void onDraw(Canvas canvas) {
         drawIcon(canvas);
         drawText(canvas);
+        drawDot(canvas);
     }
 
     private void drawIcon(Canvas canvas) {
@@ -227,6 +272,34 @@ public class IconDotTextView extends View {
         canvas.translate(tLeft, tTop);
         mTextConfig.draw(canvas);
         canvas.drawRect(0, 0, mTextConfig.getWidth(), mTextConfig.getHeight(), mPaint);
+        canvas.restore();
+    }
+
+    private void drawDot(Canvas canvas) {
+        int tLeft = 0;
+        int tTop = 0;
+        switch (mDotPosition) {
+            case POSITION_LEFT_TOP:
+                tLeft = getPaddingLeft() + mDotMarginLeft;
+                tTop = getPaddingTop() + mDotMarginTop;
+                break;
+            case POSITION_RIGHT_TOP:
+                tLeft = getWidth() - getPaddingRight() - mDotMarginRight - mDotConfig.getWidth();
+                tTop = getPaddingTop() + mDotMarginTop;
+                break;
+            case POSITION_LEFT_BOTTOM:
+                tLeft = getPaddingLeft() + mDotMarginLeft;
+                tTop = getHeight() - getPaddingBottom() - mDotMarginBottom - mDotConfig.getHeight();
+                break;
+            case POSITION_RIGHT_BOTTOM:
+                tLeft = getWidth() - getPaddingRight() - mDotMarginRight - mDotConfig.getWidth();
+                tTop = getHeight() - getPaddingBottom() - mDotMarginBottom - mDotConfig.getHeight();
+                break;
+        }
+        canvas.save();
+        canvas.translate(tLeft, tTop);
+        canvas.drawRect(0, 0, mDotConfig.getWidth(), mDotConfig.getHeight(), mPaint);
+        mDotConfig.draw(canvas);
         canvas.restore();
     }
 

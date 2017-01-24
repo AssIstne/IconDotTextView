@@ -1,12 +1,10 @@
 package com.assistne.icondottextview;
 
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
-import android.support.annotation.IntDef;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import android.support.annotation.NonNull;
 
 /**
  * Created by assistne on 17/1/20.
@@ -14,34 +12,14 @@ import java.lang.annotation.RetentionPolicy;
 // TODO: 17/1/20 文本长度
 // TODO: 17/1/20 区分有文字和无文字
 // TODO: 17/1/20 文本属性抽象出来, 一起使用TextConfig
-public class DotConfig {
-    private static final int ALIGN_TOP = 1;
-    private static final int ALIGN_RIGHT = 2;
-    private static final int ALIGN_BOTTOM = 4;
-    private static final int ALIGN_LEFT = 8;
-
-    public static final int POSITION_LEFT_TOP = 0;
-    public static final int POSITION_LEFT_BOTTOM = 1;
-    public static final int POSITION_RIGHT_TOP = 2;
-    public static final int POSITION_RIGHT_BOTTOM = 3;
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({POSITION_LEFT_TOP, POSITION_LEFT_BOTTOM, POSITION_RIGHT_TOP, POSITION_RIGHT_BOTTOM})
-    public @interface DotPosition {}
-
+public class DotConfig implements Config {
     private static final int DEFAULT_SIZE = 10;
     @ColorInt private static final int DEFAULT_COLOR = Color.RED;
-    @DotPosition private static final int DEFAULT_POSITION = POSITION_RIGHT_TOP;
-    private static final int DEFAULT_MARGIN = 10;
     private static final int DEFAULT_TEXT_SIZE = 16;
     @ColorInt private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
 
     int size = DEFAULT_SIZE;
     @ColorInt int color = DEFAULT_COLOR;
-    @DotPosition int position = DEFAULT_POSITION;
-    int marginTop = DEFAULT_MARGIN;
-    int marginRight = DEFAULT_MARGIN;
-    int marginBottom = DEFAULT_MARGIN;
-    int marginLeft = DEFAULT_MARGIN;
 
     TextConfig textConfig;
 
@@ -49,11 +27,6 @@ public class DotConfig {
         if (typedArray != null) {
             size = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_size, DEFAULT_SIZE);
             color = typedArray.getColor(R.styleable.IconDotTextView_dot_color, DEFAULT_COLOR);
-            position = getPositionFromArray(typedArray);
-            marginTop = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginTop, DEFAULT_MARGIN);
-            marginRight = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginRight, DEFAULT_MARGIN);
-            marginBottom = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginBottom, DEFAULT_MARGIN);
-            marginLeft = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginLeft, DEFAULT_MARGIN);
             String text = typedArray.getString(R.styleable.IconDotTextView_dot_text);
             int textSize = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_textSize, DEFAULT_TEXT_SIZE);
             int textColor = typedArray.getColor(R.styleable.IconDotTextView_dot_textColor, DEFAULT_TEXT_COLOR);
@@ -61,21 +34,43 @@ public class DotConfig {
         }
     }
 
-    @DotConfig.DotPosition
-    private int getPositionFromArray(TypedArray typedArray) {
-        int alignInfo = typedArray.getInt(R.styleable.IconDotTextView_dot_alignTo, ALIGN_TOP | ALIGN_RIGHT);
-        if ((alignInfo & ALIGN_TOP) != 0) {
-            if ((alignInfo & ALIGN_RIGHT) != 0) {
-                return POSITION_RIGHT_TOP;
-            } else {
-                return POSITION_LEFT_TOP;
-            }
-        } else {
-            if ((alignInfo & ALIGN_RIGHT) != 0) {
-                return POSITION_RIGHT_BOTTOM;
-            } else {
-                return POSITION_LEFT_BOTTOM;
-            }
-        }
+    @Override
+    public int getHeight() {
+        return getDesiredHeight();
+    }
+
+    @Override
+    public int getWidth() {
+        return getDesiredHeight();
+    }
+
+    @Override
+    public int getDesiredHeight() {
+        return 30;
+    }
+
+    @Override
+    public int getDesiredWidth() {
+        return 30;
+    }
+
+    @Override
+    public void setMaxWidth(int maxWidth) {
+
+    }
+
+    @Override
+    public void setMaxHeight(int maxHeight) {
+
+    }
+
+    @Override
+    public void setState(int[] state) {
+
+    }
+
+    @Override
+    public void draw(@NonNull Canvas canvas) {
+
     }
 }
