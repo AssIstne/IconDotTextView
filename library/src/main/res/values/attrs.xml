@@ -20,11 +20,11 @@
         <attr name="dot_text" format="string"/>
         <attr name="dot_textSize" format="string"/>
         <attr name="dot_textColor" format="color"/>
-        <attr name="dot_alignTo" format="enum">
-            <enum name="top" value="1"/>
-            <enum name="right" value="2"/>
-            <enum name="bottom" value="4"/>
-            <enum name="left" value="8"/>
+        <attr name="dot_alignTo">
+            <flag name="top" value="1"/>
+            <flag name="right" value="2"/>
+            <flag name="bottom" value="4"/>
+            <flag name="left" value="8"/>
         </attr>
         <attr name="dot_marginTop" format="dimension"/>
         <attr name="dot_marginRight" format="dimension"/>
