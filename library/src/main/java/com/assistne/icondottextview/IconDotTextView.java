@@ -228,4 +228,11 @@ public class IconDotTextView extends View {
         canvas.drawRect(0, 0, mTextConfig.getWidth(), mTextConfig.getHeight(), mPaint);
         canvas.restore();
     }
+
+    @Override
+    public void refreshDrawableState() {
+        super.refreshDrawableState();
+        int[] state = getDrawableState();
+        mIconConfig.setState(state);
+    }
 }

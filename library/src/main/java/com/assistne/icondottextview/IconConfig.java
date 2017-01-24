@@ -90,6 +90,13 @@ public class IconConfig implements Config {
         this.maxHeight = maxHeight;
     }
 
+    @Override
+    public void setState(int[] state) {
+        if (icon != null) {
+            icon.setState(state);
+        }
+    }
+
     public int getHeight() {
         return Math.min(maxHeight, getDesiredHeight());
     }

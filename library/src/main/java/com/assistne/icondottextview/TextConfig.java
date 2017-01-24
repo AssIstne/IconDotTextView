@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -98,7 +99,7 @@ public class TextConfig implements Config {
         return mLayout == null ? 0 : mLayout.getHeight();
     }
 
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
         if (mLayout != null) {
             mLayout.draw(canvas);
         }
@@ -115,4 +116,7 @@ public class TextConfig implements Config {
 
     }
 
+    @Override
+    public void setState(int[] state) {
+    }
 }
