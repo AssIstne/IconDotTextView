@@ -69,8 +69,8 @@
                 app:text="ABC中文123"
                 />
             <com.assistne.icondottextview.IconDotTextView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -81,6 +81,7 @@
                 app:spacing="10dp"
                 app:textSize="20sp"
                 app:text="ABC中文123"
+                app:icon="@drawable/selector_bg"
                 />
         </LinearLayout>
     </ScrollView>
