@@ -1,7 +1,12 @@
 package com.assistne.icondottextview;
 
+import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.DrawableRes;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Created by assistne on 17/1/20.
@@ -12,21 +17,32 @@ import android.support.annotation.DrawableRes;
 // TODO: 17/1/20 使用hint改变图片颜色
 
 public class IconConfig implements Config {
+    private static final String TAG = "#IconConfig";
     private static final int DEFAULT_SIZE = 40;
 
     private int size = DEFAULT_SIZE;
     private int width = DEFAULT_SIZE;
     private int height = DEFAULT_SIZE;
-    @DrawableRes int res;
+    @Nullable
+    Drawable icon;
+    private int maxWidth = Integer.MAX_VALUE;
+    private int maxHeight = Integer.MAX_VALUE;
 
-    public IconConfig(TypedArray typedArray) {
+    public IconConfig(@NonNull Context context, TypedArray typedArray) {
         if (typedArray != null) {
             width = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_icon_width, DEFAULT_SIZE);
             height = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_icon_height, DEFAULT_SIZE);
             if (!hasSpecifyWidthAndHeight()) {
-                size = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_size, DEFAULT_SIZE);
+                size = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_icon_size, DEFAULT_SIZE);
             }
-            res = typedArray.getResourceId(R.styleable.IconDotTextView_dot_color, -1);
+            int res = typedArray.getResourceId(R.styleable.IconDotTextView_icon, -1);
+            if (res != -1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    icon = context.getDrawable(res);
+                } else {
+                    icon = context.getResources().getDrawable(res);
+                }
+            }
         }
     }
 
@@ -35,30 +51,53 @@ public class IconConfig implements Config {
     }
 
     public int getWidth() {
-        return width != DEFAULT_SIZE ? width : size;
+        return Math.min(maxWidth, getDesiredHeight());
     }
 
     @Override
     public int getDesiredHeight() {
-        return width != DEFAULT_SIZE ? width : size;
+        if (height != DEFAULT_SIZE) {
+            return height;
+        } else if (size != DEFAULT_SIZE) {
+            return size;
+        } else if (icon != null && icon.getIntrinsicHeight() != -1) {
+            return icon.getIntrinsicHeight();
+        } else {
+            return DEFAULT_SIZE;
+        }
     }
 
     @Override
     public int getDesiredWidth() {
-        return height != DEFAULT_SIZE ? height : size;
+        if (width != DEFAULT_SIZE) {
+            return width;
+        } else if (size != DEFAULT_SIZE) {
+            return size;
+        } else if (icon != null && icon.getIntrinsicWidth() != -1) {
+            return icon.getIntrinsicWidth();
+        } else {
+            return DEFAULT_SIZE;
+        }
     }
 
     @Override
     public void setMaxWidth(int maxWidth) {
-
+        this.maxWidth = maxWidth;
     }
 
     @Override
     public void setMaxHeight(int maxHeight) {
-
+        this.maxHeight = maxHeight;
     }
 
     public int getHeight() {
-        return height != DEFAULT_SIZE ? height : size;
+        return Math.min(maxHeight, getDesiredHeight());
+    }
+
+    public void draw(@NonNull Canvas canvas) {
+        if (icon != null) {
+            icon.setBounds(0, 0, getWidth(), getHeight());
+            icon.draw(canvas);
+        }
     }
 }

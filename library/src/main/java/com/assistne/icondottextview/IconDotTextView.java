@@ -52,7 +52,7 @@ public class IconDotTextView extends View {
         @Direction int direction = typedArray.getInt(R.styleable.IconDotTextView_direction, COLUMN);
         mDirection = direction;
         mDotConfig = new DotConfig(typedArray);
-        mIconConfig = new IconConfig(typedArray);
+        mIconConfig = new IconConfig(context, typedArray);
         mTextConfig = new TextConfig(typedArray);
         typedArray.recycle();
 
@@ -193,6 +193,7 @@ public class IconDotTextView extends View {
         }
         canvas.save();
         canvas.translate(tLeft, tTop);
+        mIconConfig.draw(canvas);
         canvas.drawRect(0, 0, mIconConfig.getWidth(), mIconConfig.getHeight(), mPaint);
         canvas.restore();
     }
