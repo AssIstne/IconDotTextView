@@ -20,6 +20,7 @@
         <attr name="dot_text" format="string"/>
         <attr name="dot_textSize" format="dimension"/>
         <attr name="dot_textColor" format="color"/>
+        <attr name="dot_alignToIcon" format="boolean"/>
         <attr name="dot_alignTo">
             <flag name="top" value="1"/>
             <flag name="right" value="2"/>

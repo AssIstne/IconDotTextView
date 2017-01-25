@@ -43,7 +43,7 @@ public class IconDotTextView extends View {
     @IntDef({POSITION_LEFT_TOP, POSITION_LEFT_BOTTOM, POSITION_RIGHT_TOP, POSITION_RIGHT_BOTTOM})
     public @interface DotPosition {}
     @DotPosition private static final int DEFAULT_DOT_POSITION = POSITION_RIGHT_TOP;
-    private static final int DEFAULT_DOT_MARGIN = 10;
+    private static final int DEFAULT_DOT_MARGIN = 0;
 
     @DotPosition int mDotPosition = DEFAULT_DOT_POSITION;
     private int mDotMarginTop = DEFAULT_DOT_MARGIN;
@@ -54,6 +54,9 @@ public class IconDotTextView extends View {
     private int mSpacing;
     @Direction
     private int mDirection;
+    private boolean mDotAlignToIcon = false;
+    private int mIconLeft;
+    private int mIconTop;
     private DotConfig mDotConfig;
     private IconConfig mIconConfig;
     private TextConfig mTextConfig;
@@ -75,6 +78,7 @@ public class IconDotTextView extends View {
         @Direction int direction = typedArray.getInt(R.styleable.IconDotTextView_direction, COLUMN);
         mDirection = direction;
         mDotPosition = getPositionFromArray(typedArray);
+        mDotAlignToIcon = typedArray.getBoolean(R.styleable.IconDotTextView_dot_alignToIcon, false);
         mDotMarginTop = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginTop, DEFAULT_DOT_MARGIN);
         mDotMarginRight = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginRight, DEFAULT_DOT_MARGIN);
         mDotMarginBottom = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginBottom, DEFAULT_DOT_MARGIN);
@@ -238,6 +242,8 @@ public class IconDotTextView extends View {
                 tLeft = (width - mIconConfig.getWidth()) / 2 + getPaddingLeft();
                 break;
         }
+        mIconLeft = tLeft;
+        mIconTop = tTop;
         canvas.save();
         canvas.translate(tLeft, tTop);
         mIconConfig.draw(canvas);
@@ -280,23 +286,44 @@ public class IconDotTextView extends View {
     private void drawDot(Canvas canvas) {
         int tLeft = 0;
         int tTop = 0;
-        switch (mDotPosition) {
-            case POSITION_LEFT_TOP:
-                tLeft = getPaddingLeft() + mDotMarginLeft;
-                tTop = getPaddingTop() + mDotMarginTop;
-                break;
-            case POSITION_RIGHT_TOP:
-                tLeft = getWidth() - getPaddingRight() - mDotMarginRight - mDotConfig.getWidth();
-                tTop = getPaddingTop() + mDotMarginTop;
-                break;
-            case POSITION_LEFT_BOTTOM:
-                tLeft = getPaddingLeft() + mDotMarginLeft;
-                tTop = getHeight() - getPaddingBottom() - mDotMarginBottom - mDotConfig.getHeight();
-                break;
-            case POSITION_RIGHT_BOTTOM:
-                tLeft = getWidth() - getPaddingRight() - mDotMarginRight - mDotConfig.getWidth();
-                tTop = getHeight() - getPaddingBottom() - mDotMarginBottom - mDotConfig.getHeight();
-                break;
+        if (mDotAlignToIcon) {
+            switch (mDotPosition) {
+                case POSITION_LEFT_TOP:
+                    tLeft = mIconLeft - mDotMarginRight - mDotConfig.getWidth();
+                    tTop = mIconTop + mDotMarginTop;
+                    break;
+                case POSITION_RIGHT_TOP:
+                    tLeft = mIconLeft + mIconConfig.getWidth() + mDotMarginLeft;
+                    tTop = mIconTop + mDotMarginTop;
+                    break;
+                case POSITION_LEFT_BOTTOM:
+                    tLeft = mIconLeft - mDotMarginRight - mDotConfig.getWidth();
+                    tTop = mIconTop + mIconConfig.getHeight() - mDotMarginBottom - mIconConfig.getHeight();
+                    break;
+                case POSITION_RIGHT_BOTTOM:
+                    tLeft = mIconLeft + mIconConfig.getWidth() + mDotMarginLeft;
+                    tTop = mIconTop + mIconConfig.getHeight() - mDotMarginBottom - mIconConfig.getHeight();
+                    break;
+            }
+        } else {
+            switch (mDotPosition) {
+                case POSITION_LEFT_TOP:
+                    tLeft = getPaddingLeft() + mDotMarginLeft;
+                    tTop = getPaddingTop() + mDotMarginTop;
+                    break;
+                case POSITION_RIGHT_TOP:
+                    tLeft = getWidth() - getPaddingRight() - mDotMarginRight - mDotConfig.getWidth();
+                    tTop = getPaddingTop() + mDotMarginTop;
+                    break;
+                case POSITION_LEFT_BOTTOM:
+                    tLeft = getPaddingLeft() + mDotMarginLeft;
+                    tTop = getHeight() - getPaddingBottom() - mDotMarginBottom - mDotConfig.getHeight();
+                    break;
+                case POSITION_RIGHT_BOTTOM:
+                    tLeft = getWidth() - getPaddingRight() - mDotMarginRight - mDotConfig.getWidth();
+                    tTop = getHeight() - getPaddingBottom() - mDotMarginBottom - mDotConfig.getHeight();
+                    break;
+            }
         }
         canvas.save();
         canvas.translate(tLeft, tTop);
