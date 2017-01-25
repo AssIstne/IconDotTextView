@@ -73,6 +73,7 @@
                 app:dot_text="99ACB中文"
                 app:dot_textSize="10sp"
                 app:dot_size="15dp"
+                app:dot_alignToIcon="true"
                 />
             <com.assistne.icondottextview.IconDotTextView
                 android:layout_width="wrap_content"
