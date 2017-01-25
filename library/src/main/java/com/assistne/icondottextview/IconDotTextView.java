@@ -486,4 +486,15 @@ public class IconDotTextView extends View {
         mDotConfig.setColor(color);
         invalidate();
     }
+
+    public void setDotText(int number) {
+        setDotText(String.valueOf(number));
+    }
+
+    public void setDotText(CharSequence text) {
+        if (mDotConfig.textConfig != null) {
+            mDotConfig.textConfig.setText(text == null ? null : text.toString());
+            invalidate();
+        }
+    }
 }
