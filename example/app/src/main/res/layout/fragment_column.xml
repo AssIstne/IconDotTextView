@@ -85,6 +85,9 @@
                 app:textSize="20sp"
                 app:text="ABC中文123"
                 app:icon="@drawable/selector_bg"
+                app:dot_text="99"
+                app:dot_textSize="10sp"
+                app:dot_size="15dp"
                 />
         </LinearLayout>
     </ScrollView>
