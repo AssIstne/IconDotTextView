@@ -25,6 +25,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+
+                app:text="所"
+                app:icon="@drawable/ic_shopping_cart_black_48dp"
+                app:icon_size="32dp"
+                />
+            <com.assistne.icondottextview.IconDotTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
@@ -36,6 +45,7 @@
                 app:text="ABC中文123"
                 app:icon="@drawable/ic_email_black_12dp"
                 app:textColor="@color/selector_text"
+                app:dot_alignTo="left|top"
                 />
             <com.assistne.icondottextview.IconDotTextView
                 android:layout_width="match_parent"
@@ -74,7 +84,7 @@
                 app:dot_text="99ACB中文"
                 app:dot_textSize="10sp"
                 app:dot_size="15dp"
-                app:dot_alignToIcon="true"
+                app:dot_alignTo="bottom|left"
                 />
             <com.assistne.icondottextview.IconDotTextView
                 android:layout_width="wrap_content"
@@ -93,6 +103,7 @@
                 app:dot_text="99"
                 app:dot_textSize="10sp"
                 app:dot_size="15dp"
+                app:dot_alignTo="right|bottom"
                 />
         </LinearLayout>
     </ScrollView>

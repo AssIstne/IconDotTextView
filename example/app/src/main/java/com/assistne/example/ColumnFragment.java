@@ -90,8 +90,10 @@ public class ColumnFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.button0:
                 changeState(v);
+                mIconDotTextView1.setDotText(33);
                 break;
             case R.id.button1:
+                mIconDotTextView1.setDotText("...");
                 changeText();
                 changeDot();
                 break;
