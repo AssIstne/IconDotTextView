@@ -33,10 +33,10 @@ public class IconDotTextView extends View {
     private static final int ALIGN_BOTTOM = 4;
     private static final int ALIGN_LEFT = 8;
     private static final int DEFAULT_SPACING = 10;
-    private static final int ROW = 1;
-    private static final int ROW_REVERSE = 2;
-    private static final int COLUMN = 4;
-    private static final int COLUMN_REVERSE = 8;
+    public static final int ROW = 1;
+    public static final int ROW_REVERSE = 2;
+    public static final int COLUMN = 4;
+    public static final int COLUMN_REVERSE = 8;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ROW, ROW_REVERSE, COLUMN, COLUMN_REVERSE})
@@ -419,6 +419,58 @@ public class IconDotTextView extends View {
 
         if (needRefresh) {
             requestLayout();
+        }
+    }
+
+    public void setDirection(@Direction int direction) {
+        if (mDirection != direction) {
+            mDirection = direction;
+            requestLayout();
+        }
+    }
+
+    public void setDotPosition(@DotPosition int dotPosition) {
+        if (mDotPosition != dotPosition) {
+            mDotPosition = dotPosition;
+            invalidate();
+        }
+    }
+
+    public void setDotAlignToIcon(boolean alignToIcon) {
+        if (mDotAlignToIcon != alignToIcon) {
+            mDotAlignToIcon = alignToIcon;
+            invalidate();
+        }
+    }
+
+    public void setSpacing(int spacing) {
+        if (mSpacing != spacing) {
+            mSpacing = spacing;
+            requestLayout();
+        }
+    }
+
+    public void setDotMargin(int left, int top, int right, int bottom) {
+        boolean needRefresh = false;
+        if (mDotMarginLeft != left) {
+            mDotMarginLeft = left;
+            needRefresh = true;
+        }
+        if (mDotMarginTop != top) {
+            mDotMarginTop = top;
+            needRefresh = true;
+        }
+        if (mDotMarginRight != right) {
+            mDotMarginRight = right;
+            needRefresh = true;
+        }
+        if (mDotMarginBottom != bottom) {
+            mDotMarginBottom = bottom;
+            needRefresh = true;
+        }
+
+        if (needRefresh) {
+            invalidate();
         }
     }
 }
