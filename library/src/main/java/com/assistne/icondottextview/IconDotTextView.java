@@ -161,7 +161,7 @@ public class IconDotTextView extends View {
             res = contentWidth + getPaddingLeft() + getPaddingRight();
         }
 
-        return res;
+        return Math.max(getSuggestedMinimumWidth(), res);
     }
 
     private int measureHeight(int heightMeasureSpec) {
@@ -208,7 +208,7 @@ public class IconDotTextView extends View {
             res = contentHeight + getPaddingTop() + getPaddingBottom();
         }
 
-        return res;
+        return Math.max(getSuggestedMinimumHeight(), res);
     }
 
     @Override
