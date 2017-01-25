@@ -6,7 +6,9 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -139,7 +141,7 @@ public class IconDotTextView extends View {
                     contentWidth = Math.min(maxContentWidth, desiredWidth);
                     break;
                 case MeasureSpec.EXACTLY:
-                    mIconConfig.setMaxHeight(maxContentWidth - textDesiredWidth);
+                    mIconConfig.setMaxWidth(maxContentWidth - textDesiredWidth);
                     contentWidth = maxContentWidth;
                     break;
                 case MeasureSpec.UNSPECIFIED:
@@ -388,5 +390,35 @@ public class IconDotTextView extends View {
         Context context = getContext();
         Resources resources = context == null ? Resources.getSystem() : context.getResources();
         return TypedValue.applyDimension(unit, size, resources.getDisplayMetrics());
+    }
+
+    public void setIcon(@DrawableRes int drawableRes) throws Resources.NotFoundException {
+        if (getContext() != null) {
+            setIcon(getContext().getResources().getDrawable(drawableRes));
+        }
+    }
+
+    // TODO: 17/1/25 如果设置的图片大小变化同时没有指定Icon具体的大小, 此时需要考虑整个View的大小变化
+    public void setIcon(@Nullable Drawable drawable) {
+        if (drawable == null && mIconConfig.icon == null || drawable != null && !drawable.equals(mIconConfig.icon)) {
+            mIconConfig.icon = drawable;
+            invalidate();
+        }
+    }
+
+    public void setIconSize(int width, int height) {
+        boolean needRefresh = false;
+        if (mIconConfig.width != width) {
+            mIconConfig.width = width;
+            needRefresh = true;
+        }
+        if (mIconConfig.height != height) {
+            mIconConfig.height = height;
+            needRefresh = true;
+        }
+
+        if (needRefresh) {
+            requestLayout();
+        }
     }
 }

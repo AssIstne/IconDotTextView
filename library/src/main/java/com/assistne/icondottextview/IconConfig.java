@@ -11,9 +11,6 @@ import android.support.annotation.Nullable;
 /**
  * Created by assistne on 17/1/20.
  */
-// TODO: 17/1/20 单张图片和图片selector
-// TODO: 17/1/20 不指定尺寸使用图片自身的尺寸
-// TODO: 17/1/20 改变了图片的情况
 // TODO: 17/1/20 使用hint改变图片颜色
 
 public class IconConfig implements Config {
@@ -21,8 +18,8 @@ public class IconConfig implements Config {
     private static final int DEFAULT_SIZE = 40;
 
     private int size = DEFAULT_SIZE;
-    private int width = DEFAULT_SIZE;
-    private int height = DEFAULT_SIZE;
+    int width = DEFAULT_SIZE;
+    int height = DEFAULT_SIZE;
     @Nullable
     Drawable icon;
     private int maxWidth = Integer.MAX_VALUE;
@@ -51,20 +48,11 @@ public class IconConfig implements Config {
     }
 
     public int getWidth() {
-        return Math.min(maxWidth, getDesiredHeight());
+        return Math.min(maxWidth, getDesiredWidth());
     }
 
-    @Override
-    public int getDesiredHeight() {
-        if (height != DEFAULT_SIZE) {
-            return height;
-        } else if (size != DEFAULT_SIZE) {
-            return size;
-        } else if (icon != null && icon.getIntrinsicHeight() != -1) {
-            return icon.getIntrinsicHeight();
-        } else {
-            return DEFAULT_SIZE;
-        }
+    public int getHeight() {
+        return Math.min(maxHeight, getDesiredHeight());
     }
 
     @Override
@@ -75,6 +63,19 @@ public class IconConfig implements Config {
             return size;
         } else if (icon != null && icon.getIntrinsicWidth() != -1) {
             return icon.getIntrinsicWidth();
+        } else {
+            return DEFAULT_SIZE;
+        }
+    }
+
+    @Override
+    public int getDesiredHeight() {
+        if (height != DEFAULT_SIZE) {
+            return height;
+        } else if (size != DEFAULT_SIZE) {
+            return size;
+        } else if (icon != null && icon.getIntrinsicHeight() != -1) {
+            return icon.getIntrinsicHeight();
         } else {
             return DEFAULT_SIZE;
         }
@@ -93,10 +94,6 @@ public class IconConfig implements Config {
     @Override
     public boolean setState(int[] state) {
         return icon != null && icon.setState(state);
-    }
-
-    public int getHeight() {
-        return Math.min(maxHeight, getDesiredHeight());
     }
 
     public void draw(@NonNull Canvas canvas) {
