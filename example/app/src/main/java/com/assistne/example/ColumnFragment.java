@@ -71,6 +71,14 @@ public class ColumnFragment extends Fragment implements View.OnClickListener{
         mIconDotTextView3.setIcon(R.drawable.ic_email_black_12dp);
     }
 
+    public void changeAttribute() {
+        mIconDotTextView0.setSpacing(60);
+        mIconDotTextView1.setDirection(IconDotTextView.COLUMN_REVERSE);
+        mIconDotTextView2.setDotAlignToIcon(false);
+        mIconDotTextView3.setDotPosition(IconDotTextView.POSITION_LEFT_TOP);
+        mIconDotTextView3.setDotMargin(40, 20, 0, 0);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -82,6 +90,7 @@ public class ColumnFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.button2:
                 changeIcon();
+                changeAttribute();
                 break;
         }
     }
