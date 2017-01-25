@@ -47,6 +47,7 @@ public class ColumnFragment extends Fragment implements View.OnClickListener{
         mIconDotTextView3 = (IconDotTextView) mViewGroup.getChildAt(3);
         view.findViewById(R.id.button0).setOnClickListener(this);
         view.findViewById(R.id.button1).setOnClickListener(this);
+        view.findViewById(R.id.button2).setOnClickListener(this);
     }
 
     public void changeState(View view) {
@@ -65,6 +66,11 @@ public class ColumnFragment extends Fragment implements View.OnClickListener{
         mIconDotTextView2.setTextColor(android.R.color.holo_purple);
     }
 
+    public void changeIcon() {
+        mIconDotTextView2.setIconSize(60, 30);
+        mIconDotTextView3.setIcon(R.drawable.ic_email_black_12dp);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -73,6 +79,9 @@ public class ColumnFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.button1:
                 changeText();
+                break;
+            case R.id.button2:
+                changeIcon();
                 break;
         }
     }
