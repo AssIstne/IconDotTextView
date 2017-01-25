@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
@@ -23,9 +24,9 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Created by assistne on 17/1/20.
  */
-// TODO: 17/1/24 Dot相对边界布局和相对icon布局
 // TODO: 17/1/24 大小不规范时的处理, 保证text的显示?
 // TODO: 17/1/24 对外接口, 代码改变状态
+// TODO: 17/1/25 ripple效果
 public class IconDotTextView extends View {
     private static final String TAG = "#IconDotTextView";
     private static final int ALIGN_TOP = 1;
@@ -472,5 +473,17 @@ public class IconDotTextView extends View {
         if (needRefresh) {
             invalidate();
         }
+    }
+
+    public void setDotSize(int size) {
+        if (mDotConfig.getSize() != size) {
+            mDotConfig.setSize(size);
+            invalidate();
+        }
+    }
+
+    public void setDotColor(@ColorInt int color) {
+        mDotConfig.setColor(color);
+        invalidate();
     }
 }

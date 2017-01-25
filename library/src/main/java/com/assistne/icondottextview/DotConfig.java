@@ -14,14 +14,16 @@ import android.support.annotation.Nullable;
 // TODO: 17/1/20 文本长度
 // TODO: 17/1/20 区分有文字和无文字
 // TODO: 17/1/24 文本不能超出dot范围
+// TODO: 17/1/25 dot的颜色根据state变化?是否需要
 public class DotConfig implements Config {
     private static final int DEFAULT_SIZE = 35;
     @ColorInt private static final int DEFAULT_COLOR = Color.RED;
     private static final int DEFAULT_TEXT_SIZE = 16;
     @ColorInt private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
 
-    int size = DEFAULT_SIZE;
-    @ColorInt int color = DEFAULT_COLOR;
+    private int mSize = DEFAULT_SIZE;
+    @ColorInt
+    private int mColor = DEFAULT_COLOR;
 
     @Nullable
     TextConfig textConfig;
@@ -31,17 +33,17 @@ public class DotConfig implements Config {
 
     public DotConfig(TypedArray typedArray) {
         if (typedArray != null) {
-            size = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_size, DEFAULT_SIZE);
-            color = typedArray.getColor(R.styleable.IconDotTextView_dot_color, DEFAULT_COLOR);
+            mSize = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_size, DEFAULT_SIZE);
+            mColor = typedArray.getColor(R.styleable.IconDotTextView_dot_color, DEFAULT_COLOR);
             String text = typedArray.getString(R.styleable.IconDotTextView_dot_text);
             int textSize = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_textSize, DEFAULT_TEXT_SIZE);
             int textColor = typedArray.getColor(R.styleable.IconDotTextView_dot_textColor, DEFAULT_TEXT_COLOR);
             textConfig = new TextConfig(text, textSize, textColor);
-            textConfig.setMaxHeight(size);
-            textConfig.setMaxWidth(size);
+            textConfig.setMaxHeight(mSize);
+            textConfig.setMaxWidth(mSize);
         }
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(color);
+        mPaint.setColor(mColor);
         mPaint.setStyle(Paint.Style.FILL);
     }
 
@@ -57,19 +59,19 @@ public class DotConfig implements Config {
 
     @Override
     public int getDesiredHeight() {
-        return size;
+        return mSize;
     }
 
     @Override
     public int getDesiredWidth() {
-        return size;
+        return mSize;
     }
 
     @Override
     public void setMaxWidth(int maxWidth) {
         mMaxWidth = maxWidth;
         if (textConfig != null) {
-            textConfig.setMaxWidth(Math.min(maxWidth, size));
+            textConfig.setMaxWidth(Math.min(maxWidth, mSize));
         }
     }
 
@@ -77,7 +79,7 @@ public class DotConfig implements Config {
     public void setMaxHeight(int maxHeight) {
         mMaxHeight = maxHeight;
         if (textConfig != null) {
-            textConfig.setMaxHeight(Math.min(maxHeight, size));
+            textConfig.setMaxHeight(Math.min(maxHeight, mSize));
         }
     }
 
@@ -90,8 +92,8 @@ public class DotConfig implements Config {
     @Override
     public void draw(@NonNull Canvas canvas) {
         canvas.save();
-        int radius = size / 2;
-        canvas.translate((getWidth() - size) / 2, (getHeight() - size) / 2);
+        int radius = mSize / 2;
+        canvas.translate((getWidth() - mSize) / 2, (getHeight() - mSize) / 2);
         canvas.drawCircle(radius, radius, radius, mPaint);
         canvas.restore();
         if (textConfig != null) {
@@ -102,6 +104,26 @@ public class DotConfig implements Config {
             canvas.clipRect(0, 0, getWidth() - tLeft, getHeight() - tTop);
             textConfig.draw(canvas);
             canvas.restore();
+        }
+    }
+
+    public void setSize(int size) {
+        if (mSize != size) {
+            mSize = size;
+            if (textConfig != null) {
+                textConfig.setMaxHeight(Math.min(mMaxHeight, size));
+                textConfig.setMaxWidth(Math.min(mMaxWidth, size));
+            }
+        }
+    }
+
+    public int getSize() {
+        return mSize;
+    }
+
+    public void setColor(@ColorInt int color) {
+        if (mColor != color) {
+            mPaint.setColor(color);
         }
     }
 }
