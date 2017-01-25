@@ -91,10 +91,8 @@ public class IconConfig implements Config {
     }
 
     @Override
-    public void setState(int[] state) {
-        if (icon != null) {
-            icon.setState(state);
-        }
+    public boolean setState(int[] state) {
+        return icon != null && icon.setState(state);
     }
 
     public int getHeight() {

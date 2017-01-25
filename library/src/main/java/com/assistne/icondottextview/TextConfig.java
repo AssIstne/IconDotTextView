@@ -12,6 +12,8 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 
+import java.util.Arrays;
+
 /**
  * Created by assistne on 17/1/20.
  */
@@ -29,7 +31,7 @@ public class TextConfig implements Config {
 
     int size = DEFAULT_SIZE;
     int maxWidth = DEFAULT_MAX_WIDTH;
-    private ColorStateList color;
+    private ColorStateList mColorStateList;
     String text;
 
     private TextPaint mTextPaint;
@@ -38,9 +40,9 @@ public class TextConfig implements Config {
     public TextConfig(TypedArray typedArray) {
         if (typedArray != null) {
             size = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_textSize, DEFAULT_SIZE);
-            color = typedArray.getColorStateList(R.styleable.IconDotTextView_textColor);
-            if (color == null) {
-                color = ColorStateList.valueOf(DEFAULT_COLOR);
+            mColorStateList = typedArray.getColorStateList(R.styleable.IconDotTextView_textColor);
+            if (mColorStateList == null) {
+                mColorStateList = ColorStateList.valueOf(DEFAULT_COLOR);
             }
             text = typedArray.getString(R.styleable.IconDotTextView_text);
         }
@@ -50,7 +52,7 @@ public class TextConfig implements Config {
     public TextConfig(String text, int size, @ColorInt int color) {
         this.text = text;
         this.size = size;
-        this.color = ColorStateList.valueOf(color);
+        this.mColorStateList = ColorStateList.valueOf(color);
         init();
     }
 
@@ -105,7 +107,7 @@ public class TextConfig implements Config {
 
     public void draw(@NonNull Canvas canvas) {
         if (mLayout != null) {
-            mTextPaint.setColor(color.getColorForState(mTextPaint.drawableState, DEFAULT_COLOR));
+            mTextPaint.setColor(mColorStateList.getColorForState(mTextPaint.drawableState, DEFAULT_COLOR));
             mLayout.draw(canvas);
         }
     }
@@ -122,7 +124,14 @@ public class TextConfig implements Config {
     }
 
     @Override
-    public void setState(int[] state) {
-        mTextPaint.drawableState = state;
+    public boolean setState(int[] state) {
+        int[] oldState = mTextPaint.drawableState;
+        if (!Arrays.equals(oldState, state) &&
+                mColorStateList.getColorForState(state, DEFAULT_COLOR) != mColorStateList.getColorForState(oldState, DEFAULT_COLOR)) {
+            mTextPaint.drawableState = state;
+            return true;
+        } else {
+            return false;
+        }
     }
 }

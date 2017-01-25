@@ -64,9 +64,10 @@ public class DotConfig implements Config {
 
     }
 
+    // TODO: 17/1/25 状态没改变时返回false
     @Override
-    public void setState(int[] state) {
-
+    public boolean setState(int[] state) {
+        return false;
     }
 
     @Override

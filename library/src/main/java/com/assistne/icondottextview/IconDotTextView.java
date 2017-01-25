@@ -304,11 +304,16 @@ public class IconDotTextView extends View {
         mDotConfig.draw(canvas);
         canvas.restore();
     }
-
+    
     @Override
-    public void refreshDrawableState() {
-        super.refreshDrawableState();
+    protected void drawableStateChanged() {
         int[] state = getDrawableState();
-        mIconConfig.setState(state);
+        boolean changed = mIconConfig.setState(state);
+        changed |= mTextConfig.setState(state);
+        changed |= mDotConfig.setState(state);
+        super.drawableStateChanged();
+        if (changed) {
+            invalidate();
+        }
     }
 }

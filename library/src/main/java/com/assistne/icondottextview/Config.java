@@ -14,6 +14,6 @@ public interface Config {
     int getDesiredWidth();
     void setMaxWidth(int maxWidth);
     void setMaxHeight(int maxHeight);
-    void setState(int[] state);
+    boolean setState(int[] state);
     void draw(@NonNull Canvas canvas);
 }
