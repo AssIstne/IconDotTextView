@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        setTitle("Row");
+                        setTitle("Column");
                         break;
                     case 1:
-                        setTitle("Column");
+                        setTitle("Row");
                         break;
                     case 2:
                         setTitle("Row Reverse");

@@ -9,12 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.assistne.icondottextview.IconDotTextView;
+
+import static com.assistne.example.R.id.main;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ColumnFragment extends Fragment {
+public class ColumnFragment extends Fragment implements View.OnClickListener{
 
+    private IconDotTextView mIconDotTextView0;
+    private IconDotTextView mIconDotTextView1;
+    private IconDotTextView mIconDotTextView2;
+    private IconDotTextView mIconDotTextView3;
+    private ViewGroup mViewGroup;
 
     public ColumnFragment() {
         // Required empty public constructor
@@ -31,19 +40,40 @@ public class ColumnFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final Button button = (Button) view.findViewById(R.id.button);
-        final ViewGroup main = (ViewGroup) view.findViewById(R.id.main);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!main.isSelected()) {
-                    button.setText("Unselected");
-                    main.setSelected(true);
-                } else {
-                    button.setText("Selected");
-                    main.setSelected(false);
-                }
-            }
-        });
+        mViewGroup = (ViewGroup) view.findViewById(main);
+        mIconDotTextView0 = (IconDotTextView) mViewGroup.getChildAt(0);
+        mIconDotTextView1 = (IconDotTextView) mViewGroup.getChildAt(1);
+        mIconDotTextView2 = (IconDotTextView) mViewGroup.getChildAt(2);
+        mIconDotTextView3 = (IconDotTextView) mViewGroup.getChildAt(3);
+        view.findViewById(R.id.button0).setOnClickListener(this);
+        view.findViewById(R.id.button1).setOnClickListener(this);
+    }
+
+    public void changeState(View view) {
+        if (!mViewGroup.isSelected()) {
+            ((Button)view).setText("Unselected");
+            mViewGroup.setSelected(true);
+        } else {
+            ((Button)view).setText("Selected");
+            mViewGroup.setSelected(false);
+        }
+    }
+
+    public void changeText() {
+        mIconDotTextView0.setTextSize(14);
+        mIconDotTextView1.setText("123");
+        mIconDotTextView2.setTextColor(android.R.color.holo_purple);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button0:
+                changeState(v);
+                break;
+            case R.id.button1:
+                changeText();
+                break;
+        }
     }
 }
