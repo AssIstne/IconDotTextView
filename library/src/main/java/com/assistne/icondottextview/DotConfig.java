@@ -16,9 +16,9 @@ import android.support.annotation.Nullable;
 // TODO: 17/1/24 文本不能超出dot范围
 // TODO: 17/1/25 dot的颜色根据state变化?是否需要
 public class DotConfig implements Config {
-    private static final int DEFAULT_SIZE = 35;
-    @ColorInt private static final int DEFAULT_COLOR = Color.RED;
-    private static final int DEFAULT_TEXT_SIZE = 16;
+    private static final int DEFAULT_SIZE = 38;
+    @ColorInt private static final int DEFAULT_COLOR = Color.rgb(211, 47, 47);// #D32F2F
+    private static final int DEFAULT_TEXT_SIZE = 25;
     @ColorInt private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
 
     private int mSize = DEFAULT_SIZE;

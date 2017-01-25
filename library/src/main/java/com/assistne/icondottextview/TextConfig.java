@@ -23,7 +23,7 @@ public class TextConfig implements Config {
 
     private static final int DEFAULT_SIZE = 36;
     @ColorInt
-    private static final int DEFAULT_COLOR = Color.RED;
+    private static final int DEFAULT_COLOR = Color.argb(137, 0, 0, 0);// #000000 54%
     private static final int DEFAULT_MAX_WIDTH = Integer.MAX_VALUE;
 
     private int mSize = DEFAULT_SIZE;

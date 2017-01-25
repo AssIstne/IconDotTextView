@@ -33,7 +33,7 @@ public class IconDotTextView extends View {
     private static final int ALIGN_RIGHT = 2;
     private static final int ALIGN_BOTTOM = 4;
     private static final int ALIGN_LEFT = 8;
-    private static final int DEFAULT_SPACING = 10;
+    private static final int DEFAULT_SPACING = 0;
     public static final int ROW = 1;
     public static final int ROW_REVERSE = 2;
     public static final int COLUMN = 4;
@@ -52,7 +52,7 @@ public class IconDotTextView extends View {
     @IntDef({POSITION_LEFT_TOP, POSITION_LEFT_BOTTOM, POSITION_RIGHT_TOP, POSITION_RIGHT_BOTTOM})
     public @interface DotPosition {}
     @DotPosition private static final int DEFAULT_DOT_POSITION = POSITION_RIGHT_TOP;
-    private static final int DEFAULT_DOT_MARGIN = 0;
+    private static final int DEFAULT_DOT_MARGIN = -15;
 
     @DotPosition int mDotPosition = DEFAULT_DOT_POSITION;
     private int mDotMarginTop = DEFAULT_DOT_MARGIN;
@@ -63,7 +63,7 @@ public class IconDotTextView extends View {
     private int mSpacing;
     @Direction
     private int mDirection;
-    private boolean mDotAlignToIcon = false;
+    private boolean mDotAlignToIcon = true;
     private int mIconLeft;
     private int mIconTop;
     private DotConfig mDotConfig;
@@ -87,7 +87,7 @@ public class IconDotTextView extends View {
         @Direction int direction = typedArray.getInt(R.styleable.IconDotTextView_direction, COLUMN);
         mDirection = direction;
         mDotPosition = getPositionFromArray(typedArray);
-        mDotAlignToIcon = typedArray.getBoolean(R.styleable.IconDotTextView_dot_alignToIcon, false);
+        mDotAlignToIcon = typedArray.getBoolean(R.styleable.IconDotTextView_dot_alignToIcon, true);
         mDotMarginTop = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginTop, DEFAULT_DOT_MARGIN);
         mDotMarginRight = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginRight, DEFAULT_DOT_MARGIN);
         mDotMarginBottom = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginBottom, DEFAULT_DOT_MARGIN);
@@ -256,7 +256,6 @@ public class IconDotTextView extends View {
         canvas.save();
         canvas.translate(tLeft, tTop);
         mIconConfig.draw(canvas);
-        canvas.drawRect(0, 0, mIconConfig.getWidth(), mIconConfig.getHeight(), mPaint);
         canvas.restore();
     }
 
@@ -288,7 +287,6 @@ public class IconDotTextView extends View {
         canvas.save();
         canvas.translate(tLeft, tTop);
         mTextConfig.draw(canvas);
-        canvas.drawRect(0, 0, mTextConfig.getWidth(), mTextConfig.getHeight(), mPaint);
         canvas.restore();
     }
 
@@ -336,7 +334,6 @@ public class IconDotTextView extends View {
         }
         canvas.save();
         canvas.translate(tLeft, tTop);
-        canvas.drawRect(0, 0, mDotConfig.getWidth(), mDotConfig.getHeight(), mPaint);
         mDotConfig.draw(canvas);
         canvas.restore();
     }
