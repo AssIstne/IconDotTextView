@@ -1,6 +1,7 @@
 package com.assistne.example;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -79,6 +80,11 @@ public class ColumnFragment extends Fragment implements View.OnClickListener{
         mIconDotTextView3.setDotMargin(40, 20, 0, 0);
     }
 
+    public void changeDot() {
+        mIconDotTextView0.setDotSize(60);
+        mIconDotTextView1.setDotColor(Color.BLUE);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -87,6 +93,7 @@ public class ColumnFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.button1:
                 changeText();
+                changeDot();
                 break;
             case R.id.button2:
                 changeIcon();
