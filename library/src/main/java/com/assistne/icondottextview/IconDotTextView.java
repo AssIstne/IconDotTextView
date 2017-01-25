@@ -160,6 +160,12 @@ public class IconDotTextView extends View {
                     break;
             }
             res = contentWidth + getPaddingLeft() + getPaddingRight();
+            if (mDotAlignToIcon) {
+                int delta = res / 2 - (mDotConfig.getWidth() + getDotHorizontalMargin() + mIconConfig.getWidth() / 2);
+                if (delta < 0) {
+                    res -= (delta * 2);
+                }
+            }
         }
 
         return Math.max(getSuggestedMinimumWidth(), res);
@@ -207,9 +213,40 @@ public class IconDotTextView extends View {
             }
 
             res = contentHeight + getPaddingTop() + getPaddingBottom();
+
+            if (mDotAlignToIcon && getDotVerticalMargin() < 0) {
+                int delta = getPaddingTop() + getDotVerticalMargin();
+                if (delta < 0) {
+                    res -= (delta * 2);
+                }
+            }
         }
 
         return Math.max(getSuggestedMinimumHeight(), res);
+    }
+
+    private int getDotHorizontalMargin() {
+        switch (mDotPosition) {
+            case POSITION_LEFT_TOP:
+            case POSITION_LEFT_BOTTOM:
+                return mDotAlignToIcon ? mDotMarginRight : mDotMarginLeft;
+            case POSITION_RIGHT_TOP:
+            case POSITION_RIGHT_BOTTOM:
+                return !mDotAlignToIcon ? mDotMarginRight : mDotMarginLeft;
+        }
+        return 0;
+    }
+
+    private int getDotVerticalMargin() {
+        switch (mDotPosition) {
+            case POSITION_LEFT_TOP:
+            case POSITION_RIGHT_TOP:
+                return mDotMarginTop;
+            case POSITION_LEFT_BOTTOM:
+            case POSITION_RIGHT_BOTTOM:
+                return mDotMarginBottom;
+        }
+        return 0;
     }
 
     @Override
