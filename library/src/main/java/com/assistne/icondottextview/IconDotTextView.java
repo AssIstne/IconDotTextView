@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -55,22 +53,20 @@ public class IconDotTextView extends View {
     private static final int DEFAULT_DOT_MARGIN = -15;
 
     @DotPosition int mDotPosition = DEFAULT_DOT_POSITION;
-    private int mDotMarginTop = DEFAULT_DOT_MARGIN;
-    private int mDotMarginRight = DEFAULT_DOT_MARGIN;
-    private int mDotMarginBottom = DEFAULT_DOT_MARGIN;
-    private int mDotMarginLeft = DEFAULT_DOT_MARGIN;
+    private int mDotMarginTop;
+    private int mDotMarginRight;
+    private int mDotMarginBottom;
+    private int mDotMarginLeft;
 
     private int mSpacing;
     @Direction
     private int mDirection;
-    private boolean mDotAlignToIcon = true;
+    private boolean mDotAlignToIcon;
     private int mIconLeft;
     private int mIconTop;
     private DotConfig mDotConfig;
     private IconConfig mIconConfig;
     private TextConfig mTextConfig;
-
-    private Paint mPaint;
 
     public IconDotTextView(Context context) {
         this(context, null);
@@ -80,6 +76,7 @@ public class IconDotTextView extends View {
         this(context, attrs, 0);
     }
 
+    @SuppressWarnings("ResourceType")
     public IconDotTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.IconDotTextView);
@@ -96,11 +93,6 @@ public class IconDotTextView extends View {
         mIconConfig = new IconConfig(context, typedArray);
         mTextConfig = new TextConfig(typedArray);
         typedArray.recycle();
-
-        mPaint = new Paint();
-        mPaint.setColor(Color.DKGRAY);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(4);
     }
 
     @DotPosition
@@ -305,30 +297,30 @@ public class IconDotTextView extends View {
                     break;
                 case POSITION_LEFT_BOTTOM:
                     tLeft = mIconLeft - mDotMarginRight - mDotConfig.getWidth();
-                    tTop = mIconTop + mIconConfig.getHeight() - mDotMarginBottom - mIconConfig.getHeight();
+                    tTop = mIconTop + mIconConfig.getHeight() - mDotConfig.getHeight() - mDotMarginBottom;
                     break;
                 case POSITION_RIGHT_BOTTOM:
                     tLeft = mIconLeft + mIconConfig.getWidth() + mDotMarginLeft;
-                    tTop = mIconTop + mIconConfig.getHeight() - mDotMarginBottom - mIconConfig.getHeight();
+                    tTop = mIconTop + mIconConfig.getHeight() - mDotConfig.getHeight() - mDotMarginBottom;
                     break;
             }
         } else {
-            switch (mDotPosition) {
+            switch (mDotPosition) {// 相对边界位置时margin不能为负
                 case POSITION_LEFT_TOP:
-                    tLeft = getPaddingLeft() + mDotMarginLeft;
-                    tTop = getPaddingTop() + mDotMarginTop;
+                    tLeft = getPaddingLeft() + Math.max(0, mDotMarginLeft);
+                    tTop = getPaddingTop() + Math.max(0, mDotMarginTop);
                     break;
                 case POSITION_RIGHT_TOP:
-                    tLeft = getWidth() - getPaddingRight() - mDotMarginRight - mDotConfig.getWidth();
-                    tTop = getPaddingTop() + mDotMarginTop;
+                    tLeft = getWidth() - getPaddingRight() - Math.max(0, mDotMarginRight) - mDotConfig.getWidth();
+                    tTop = getPaddingTop() + Math.max(0, mDotMarginTop);
                     break;
                 case POSITION_LEFT_BOTTOM:
-                    tLeft = getPaddingLeft() + mDotMarginLeft;
-                    tTop = getHeight() - getPaddingBottom() - mDotMarginBottom - mDotConfig.getHeight();
+                    tLeft = getPaddingLeft() + Math.max(0, mDotMarginLeft);
+                    tTop = getHeight() - getPaddingBottom() - Math.max(0, mDotMarginBottom) - mDotConfig.getHeight();
                     break;
                 case POSITION_RIGHT_BOTTOM:
-                    tLeft = getWidth() - getPaddingRight() - mDotMarginRight - mDotConfig.getWidth();
-                    tTop = getHeight() - getPaddingBottom() - mDotMarginBottom - mDotConfig.getHeight();
+                    tLeft = getWidth() - getPaddingRight() - Math.max(0, mDotMarginRight) - mDotConfig.getWidth();
+                    tTop = getHeight() - getPaddingBottom() - Math.max(0, mDotMarginBottom) - mDotConfig.getHeight();
                     break;
             }
         }
