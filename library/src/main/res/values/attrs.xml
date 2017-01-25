@@ -18,7 +18,7 @@
         <attr name="dot_size" format="dimension"/>
         <attr name="dot_color" format="color"/>
         <attr name="dot_text" format="string"/>
-        <attr name="dot_textSize" format="string"/>
+        <attr name="dot_textSize" format="dimension"/>
         <attr name="dot_textColor" format="color"/>
         <attr name="dot_alignTo">
             <flag name="top" value="1"/>
