@@ -63,6 +63,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
+                android:minWidth="70dp"
                 app:icon="@drawable/ic_email_black_12dp"
                 app:icon_size="32dp"
 
@@ -96,9 +97,15 @@
         </LinearLayout>
     </ScrollView>
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Selected"
+        />
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change text"
         />
 </LinearLayout>

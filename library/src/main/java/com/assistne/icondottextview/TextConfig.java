@@ -17,10 +17,7 @@ import java.util.Arrays;
 /**
  * Created by assistne on 17/1/20.
  */
-// TODO: 17/1/20 BoringLayout计算文本长度
 // TODO: 17/1/20 限制文本长度, 过长省略
-// TODO: 17/1/20 文本改变的情况
-
 public class TextConfig implements Config {
     private static final String TAG = "#TextConfig";
 
@@ -29,29 +26,29 @@ public class TextConfig implements Config {
     private static final int DEFAULT_COLOR = Color.RED;
     private static final int DEFAULT_MAX_WIDTH = Integer.MAX_VALUE;
 
-    int size = DEFAULT_SIZE;
-    int maxWidth = DEFAULT_MAX_WIDTH;
+    private int mSize = DEFAULT_SIZE;
+    private int mMaxWidth = DEFAULT_MAX_WIDTH;
     private ColorStateList mColorStateList;
-    String text;
+    private String mText;
 
     private TextPaint mTextPaint;
     private Layout mLayout;
 
     public TextConfig(TypedArray typedArray) {
         if (typedArray != null) {
-            size = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_textSize, DEFAULT_SIZE);
+            mSize = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_textSize, DEFAULT_SIZE);
             mColorStateList = typedArray.getColorStateList(R.styleable.IconDotTextView_textColor);
             if (mColorStateList == null) {
                 mColorStateList = ColorStateList.valueOf(DEFAULT_COLOR);
             }
-            text = typedArray.getString(R.styleable.IconDotTextView_text);
+            mText = typedArray.getString(R.styleable.IconDotTextView_text);
         }
         init();
     }
 
     public TextConfig(String text, int size, @ColorInt int color) {
-        this.text = text;
-        this.size = size;
+        this.mText = text;
+        this.mSize = size;
         this.mColorStateList = ColorStateList.valueOf(color);
         init();
     }
@@ -64,24 +61,26 @@ public class TextConfig implements Config {
     private void initPaint() {
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setColor(DEFAULT_COLOR);
-        mTextPaint.setTextSize(size);
+        mTextPaint.setTextSize(mSize);
     }
 
     private void initLayout() {
-        if (!TextUtils.isEmpty(text)) {
+        if (!TextUtils.isEmpty(mText)) {
             int outerWidth = getWidth();
-            mLayout = new StaticLayout(text, 0, text.length(),
+            mLayout = new StaticLayout(mText, 0, mText.length(),
                     mTextPaint, outerWidth, Layout.Alignment.ALIGN_CENTER,
                     1f, 0f, true,
                     TextUtils.TruncateAt.MIDDLE, outerWidth);
+        } else {
+            mLayout = null;
         }
     }
 
 
     public int getWidth() {
-        if (!TextUtils.isEmpty(text)) {
-            int desiredWidth = (int) Math.ceil(Layout.getDesiredWidth(text, mTextPaint));
-            return Math.min(desiredWidth, maxWidth);
+        if (!TextUtils.isEmpty(mText)) {
+            int desiredWidth = (int) Math.ceil(Layout.getDesiredWidth(mText, mTextPaint));
+            return Math.min(desiredWidth, mMaxWidth);
         } else {
             return 0;
         }
@@ -94,8 +93,8 @@ public class TextConfig implements Config {
 
     @Override
     public int getDesiredWidth() {
-        if (!TextUtils.isEmpty(text)) {
-            return (int) Math.ceil(Layout.getDesiredWidth(text, mTextPaint));
+        if (!TextUtils.isEmpty(mText)) {
+            return (int) Math.ceil(Layout.getDesiredWidth(mText, mTextPaint));
         } else {
             return 0;
         }
@@ -113,7 +112,7 @@ public class TextConfig implements Config {
     }
 
     public void setMaxWidth(int maxWidth) {
-        this.maxWidth = maxWidth;
+        this.mMaxWidth = maxWidth;
         mLayout = null;
         initLayout();
     }
@@ -133,5 +132,28 @@ public class TextConfig implements Config {
         } else {
             return false;
         }
+    }
+
+    public void setColor(@ColorInt int color) {
+        mColorStateList = ColorStateList.valueOf(color);
+    }
+
+    public void setText(String text) {
+        this.mText = text;
+        mLayout = null;
+        initLayout();
+    }
+
+    public String getText() {
+        return mText;
+    }
+
+    public int getSize() {
+        return mSize;
+    }
+
+    public void setSize(int size) {
+        this.mSize = size;
+        mTextPaint.setTextSize(size);
     }
 }

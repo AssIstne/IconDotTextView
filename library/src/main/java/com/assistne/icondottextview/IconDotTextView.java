@@ -1,12 +1,18 @@
 package com.assistne.icondottextview;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.ColorRes;
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 import java.lang.annotation.Retention;
@@ -342,5 +348,45 @@ public class IconDotTextView extends View {
         if (changed) {
             invalidate();
         }
+    }
+
+    public void setText(@StringRes int res) {
+        setText(getContext().getResources().getString(res));
+    }
+
+    public void setText(@Nullable CharSequence text) {
+        String oldText = mTextConfig.getText();
+        if (TextUtils.isEmpty(text) && !TextUtils.isEmpty(oldText) || !TextUtils.isEmpty(text) && !text.equals(mTextConfig.getText())) {
+            int oldDesiredWidth = mTextConfig.getDesiredWidth();
+            mTextConfig.setText(TextUtils.isEmpty(text) ? null : text.toString());
+            if (oldDesiredWidth != mTextConfig.getDesiredWidth()) {
+                requestLayout();
+            } else {
+                invalidate();
+            }
+        }
+    }
+
+    public void setTextColor(@ColorRes int colorRes) {
+        mTextConfig.setColor(getContext().getResources().getColor(colorRes));
+        invalidate();
+    }
+
+    public void setTextSize(float size) {
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+    }
+
+    public void setTextSize(int unit, float size) {
+        int newSize = (int) getRawTextSize(unit, size);
+        if (mTextConfig.getSize() != newSize) {
+            mTextConfig.setSize(newSize);
+            requestLayout();
+        }
+    }
+
+    private float getRawTextSize(int unit, float size) {
+        Context context = getContext();
+        Resources resources = context == null ? Resources.getSystem() : context.getResources();
+        return TypedValue.applyDimension(unit, size, resources.getDisplayMetrics());
     }
 }
