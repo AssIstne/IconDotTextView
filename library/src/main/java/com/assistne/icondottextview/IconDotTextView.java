@@ -81,6 +81,7 @@ public class IconDotTextView extends View {
     private boolean mDotAlignToIcon;
     private int mIconLeft;
     private int mIconTop;
+    private boolean mIsDotVisible;
     private DotConfig mDotConfig;
     private IconConfig mIconConfig;
     private TextConfig mTextConfig;
@@ -117,6 +118,7 @@ public class IconDotTextView extends View {
         mDotMarginRight = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginRight, DEFAULT_DOT_MARGIN);
         mDotMarginBottom = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginBottom, DEFAULT_DOT_MARGIN);
         mDotMarginLeft = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_marginLeft, DEFAULT_DOT_MARGIN);
+        mIsDotVisible = typedArray.getBoolean(R.styleable.IconDotTextView_dot_visible, false);
         mDotConfig = new DotConfig(typedArray);
         mIconConfig = new IconConfig(context, typedArray);
         mTextConfig = new TextConfig(typedArray);
@@ -281,7 +283,9 @@ public class IconDotTextView extends View {
     protected void onDraw(Canvas canvas) {
         drawIcon(canvas);
         drawText(canvas);
-        drawDot(canvas);
+        if (mIsDotVisible) {
+            drawDot(canvas);
+        }
     }
 
     private void drawIcon(Canvas canvas) {
@@ -641,6 +645,18 @@ public class IconDotTextView extends View {
     public void setDotText(CharSequence text) {
         if (mDotConfig.textConfig != null) {
             mDotConfig.textConfig.setText(text == null ? null : text.toString());
+            invalidate();
+        }
+    }
+
+    /**
+     * set if the dot is visible. Default is not visible.
+     *
+     * @param visible true for visible.
+     */
+    public void setDotVisibility(boolean visible) {
+        if (mIsDotVisible != visible) {
+            mIsDotVisible = visible;
             invalidate();
         }
     }
