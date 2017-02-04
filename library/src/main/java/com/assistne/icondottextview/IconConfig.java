@@ -57,27 +57,35 @@ public class IconConfig implements Config {
 
     @Override
     public int getDesiredWidth() {
-        if (width != DEFAULT_SIZE) {
-            return width;
-        } else if (size != DEFAULT_SIZE) {
-            return size;
-        } else if (icon != null && icon.getIntrinsicWidth() != -1) {
-            return icon.getIntrinsicWidth();
+        if (icon != null) {
+            if (width != DEFAULT_SIZE) {
+                return width;
+            } else if (size != DEFAULT_SIZE) {
+                return size;
+            } else if (icon.getIntrinsicWidth() != -1) {
+                return icon.getIntrinsicWidth();
+            } else {
+                return DEFAULT_SIZE;
+            }
         } else {
-            return DEFAULT_SIZE;
+            return 0;
         }
     }
 
     @Override
     public int getDesiredHeight() {
-        if (height != DEFAULT_SIZE) {
-            return height;
-        } else if (size != DEFAULT_SIZE) {
-            return size;
-        } else if (icon != null && icon.getIntrinsicHeight() != -1) {
-            return icon.getIntrinsicHeight();
+        if (icon != null) {
+            if (height != DEFAULT_SIZE) {
+                return height;
+            } else if (size != DEFAULT_SIZE) {
+                return size;
+            } else if (icon.getIntrinsicHeight() != -1) {
+                return icon.getIntrinsicHeight();
+            } else {
+                return DEFAULT_SIZE;
+            }
         } else {
-            return DEFAULT_SIZE;
+            return 0;
         }
     }
 
