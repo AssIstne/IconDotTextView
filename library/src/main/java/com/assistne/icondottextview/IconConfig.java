@@ -26,7 +26,7 @@ public class IconConfig implements Config {
     private int maxHeight = Integer.MAX_VALUE;
 
     public IconConfig(@NonNull Context context, TypedArray typedArray) {
-        DEFAULT_SIZE  = IconDotTextView.sDefaultIconSize;
+        DEFAULT_SIZE = IconDotTextView.sDefaultIconSize;
         if (typedArray != null) {
             width = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_icon_width, DEFAULT_SIZE);
             height = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_icon_height, DEFAULT_SIZE);

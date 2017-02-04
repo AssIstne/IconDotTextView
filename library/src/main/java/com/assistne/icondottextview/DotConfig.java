@@ -14,9 +14,11 @@ import android.support.annotation.Nullable;
 // TODO: 17/1/25 dot的颜色根据state变化?是否需要
 public class DotConfig implements Config {
     private static int DEFAULT_SIZE;
-    @ColorInt private static final int DEFAULT_COLOR = Color.rgb(211, 47, 47);// #D32F2F
+    @ColorInt
+    private static final int DEFAULT_COLOR = Color.rgb(211, 47, 47);// #D32F2F
     private static int DEFAULT_TEXT_SIZE;
-    @ColorInt private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
+    @ColorInt
+    private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
 
     private int mSize;
     @ColorInt

@@ -22,8 +22,6 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Created by assistne on 17/1/20.
  */
-// TODO: 17/1/24 大小不规范时的处理, 保证text的显示?
-// TODO: 17/1/24 对外接口, 代码改变状态
 // TODO: 17/1/25 ripple效果
 public class IconDotTextView extends View {
     private static final String TAG = "#IconDotTextView";
@@ -32,14 +30,29 @@ public class IconDotTextView extends View {
     private static final int ALIGN_BOTTOM = 4;
     private static final int ALIGN_LEFT = 8;
     private static final int DEFAULT_SPACING = 0;
+    /**
+     * the icon and the text will be ordered in a row and the icon comes first.
+     * That means the icon will be left of the text.
+     */
     public static final int ROW = 1;
+    /**
+     * the icon and the text will be ordered in a row and the text comes first.
+     */
     public static final int ROW_REVERSE = 2;
+    /**
+     * the icon and the text will be ordered in a column and the icon comes first.
+     * That means the icon will be above of the text.
+     */
     public static final int COLUMN = 4;
+    /**
+     * the icon and the text will be ordered in a column and the text comes first.
+     */
     public static final int COLUMN_REVERSE = 8;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ROW, ROW_REVERSE, COLUMN, COLUMN_REVERSE})
-    public @interface Direction{}
+    public @interface Direction {
+    }
 
     public static final int POSITION_LEFT_TOP = 0;
     public static final int POSITION_LEFT_BOTTOM = 1;
@@ -48,11 +61,15 @@ public class IconDotTextView extends View {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({POSITION_LEFT_TOP, POSITION_LEFT_BOTTOM, POSITION_RIGHT_TOP, POSITION_RIGHT_BOTTOM})
-    public @interface DotPosition {}
-    @DotPosition private static final int DEFAULT_DOT_POSITION = POSITION_RIGHT_TOP;
+    public @interface DotPosition {
+    }
+
+    @DotPosition
+    private static final int DEFAULT_DOT_POSITION = POSITION_RIGHT_TOP;
     private static final int DEFAULT_DOT_MARGIN = -15;
 
-    @DotPosition int mDotPosition = DEFAULT_DOT_POSITION;
+    @DotPosition
+    int mDotPosition = DEFAULT_DOT_POSITION;
     private int mDotMarginTop;
     private int mDotMarginRight;
     private int mDotMarginBottom;
@@ -276,11 +293,11 @@ public class IconDotTextView extends View {
         switch (mDirection) {
             case ROW:
                 tTop = (height - mIconConfig.getHeight()) / 2 + getPaddingTop();
-                tLeft = (width - mIconConfig.getWidth() - mSpacing - mTextConfig.getWidth()) /2 + getPaddingLeft();
+                tLeft = (width - mIconConfig.getWidth() - mSpacing - mTextConfig.getWidth()) / 2 + getPaddingLeft();
                 break;
             case ROW_REVERSE:
                 tTop = (height - mIconConfig.getHeight()) / 2 + getPaddingTop();
-                tLeft = getMeasuredWidth() - (width - mIconConfig.getWidth() - mSpacing - mTextConfig.getWidth()) /2 - mIconConfig.getWidth() - getPaddingRight();
+                tLeft = getMeasuredWidth() - (width - mIconConfig.getWidth() - mSpacing - mTextConfig.getWidth()) / 2 - mIconConfig.getWidth() - getPaddingRight();
                 break;
             case COLUMN:
                 tTop = (height - contentHeight) / 2 + getPaddingTop();
@@ -309,11 +326,11 @@ public class IconDotTextView extends View {
         switch (mDirection) {
             case ROW:
                 tTop = (height - mTextConfig.getHeight()) / 2 + getPaddingTop();
-                tLeft = getMeasuredWidth() - (width - mIconConfig.getWidth() - mSpacing - mTextConfig.getWidth()) /2 - mTextConfig.getWidth() - getPaddingLeft();
+                tLeft = getMeasuredWidth() - (width - mIconConfig.getWidth() - mSpacing - mTextConfig.getWidth()) / 2 - mTextConfig.getWidth() - getPaddingLeft();
                 break;
             case ROW_REVERSE:
                 tTop = (height - mTextConfig.getHeight()) / 2 + getPaddingTop();
-                tLeft = (width - mIconConfig.getWidth() - mSpacing - mTextConfig.getWidth()) /2 + getPaddingLeft();
+                tLeft = (width - mIconConfig.getWidth() - mSpacing - mTextConfig.getWidth()) / 2 + getPaddingLeft();
                 break;
             case COLUMN:
                 tTop = (height - contentHeight) / 2 + getPaddingTop() + mIconConfig.getHeight() + mSpacing;
@@ -377,7 +394,7 @@ public class IconDotTextView extends View {
         mDotConfig.draw(canvas);
         canvas.restore();
     }
-    
+
     @Override
     protected void drawableStateChanged() {
         int[] state = getDrawableState();
@@ -390,10 +407,20 @@ public class IconDotTextView extends View {
         }
     }
 
-    public void setText(@StringRes int res) {
+    /**
+     * set the text of the view.
+     *
+     * @param res the string resource id.
+     */
+    public void setText(@StringRes int res) throws Resources.NotFoundException {
         setText(getContext().getResources().getString(res));
     }
 
+    /**
+     * set the text of the view.
+     *
+     * @param text the target text.
+     */
     public void setText(@Nullable CharSequence text) {
         String oldText = mTextConfig.getText();
         if (TextUtils.isEmpty(text) && !TextUtils.isEmpty(oldText) || !TextUtils.isEmpty(text) && !text.equals(mTextConfig.getText())) {
@@ -407,15 +434,32 @@ public class IconDotTextView extends View {
         }
     }
 
+    /**
+     * set the color of the text.
+     *
+     * @param colorRes the color resource id.
+     */
     public void setTextColor(@ColorRes int colorRes) {
         mTextConfig.setColor(getContext().getResources().getColor(colorRes));
         invalidate();
     }
 
+    /**
+     * set the text size of the text, interpreted as "scaled pixel" units.
+     *
+     * @param size The scaled pixel size.
+     */
     public void setTextSize(float size) {
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
     }
 
+    /**
+     * set the text size of the text. See {@link
+     * TypedValue} for the possible dimension units.
+     *
+     * @param unit The desired dimension unit.
+     * @param size The desired size in the given units.
+     */
     public void setTextSize(int unit, float size) {
         int newSize = (int) getRawTextSize(unit, size);
         if (mTextConfig.getSize() != newSize) {
@@ -430,12 +474,22 @@ public class IconDotTextView extends View {
         return TypedValue.applyDimension(unit, size, resources.getDisplayMetrics());
     }
 
+    /**
+     * set the icon of the view.
+     *
+     * @param drawableRes the drawable resource id.
+     */
     public void setIcon(@DrawableRes int drawableRes) throws Resources.NotFoundException {
         if (getContext() != null) {
             setIcon(getContext().getResources().getDrawable(drawableRes));
         }
     }
 
+    /**
+     * set the icon of the view.
+     *
+     * @param drawable the drawable.
+     */
     // TODO: 17/1/25 如果设置的图片大小变化同时没有指定Icon具体的大小, 此时需要考虑整个View的大小变化
     public void setIcon(@Nullable Drawable drawable) {
         if (drawable == null && mIconConfig.icon == null || drawable != null && !drawable.equals(mIconConfig.icon)) {
@@ -444,6 +498,12 @@ public class IconDotTextView extends View {
         }
     }
 
+    /**
+     * set the width and height of the icon.
+     *
+     * @param width  the desired width of the icon.
+     * @param height the desired height of the icon.
+     */
     public void setIconSize(int width, int height) {
         boolean needRefresh = false;
         if (mIconConfig.width != width) {
@@ -460,6 +520,11 @@ public class IconDotTextView extends View {
         }
     }
 
+    /**
+     * set the direction of the view. Default is {@link #COLUMN}.
+     *
+     * @param direction one of the {@link #ROW}, {@link #ROW_REVERSE}, {@link #COLUMN}, {@link #COLUMN_REVERSE}
+     */
     public void setDirection(@Direction int direction) {
         if (mDirection != direction) {
             mDirection = direction;
@@ -467,6 +532,12 @@ public class IconDotTextView extends View {
         }
     }
 
+    /**
+     * set the position of the dot. Default the dot is at the right-top position.
+     *
+     * @param dotPosition one of the {@link #POSITION_LEFT_TOP}, {@link #POSITION_RIGHT_TOP},
+     *                    {@link #POSITION_RIGHT_BOTTOM}, {@link #POSITION_LEFT_BOTTOM}
+     */
     public void setDotPosition(@DotPosition int dotPosition) {
         if (mDotPosition != dotPosition) {
             mDotPosition = dotPosition;
@@ -474,6 +545,11 @@ public class IconDotTextView extends View {
         }
     }
 
+    /**
+     * if the dot align to icon or to the boarder of the view. Default the dot is align to the icon.
+     *
+     * @param alignToIcon true means align to the boarder of icon, false to the view.
+     */
     public void setDotAlignToIcon(boolean alignToIcon) {
         if (mDotAlignToIcon != alignToIcon) {
             mDotAlignToIcon = alignToIcon;
@@ -481,6 +557,11 @@ public class IconDotTextView extends View {
         }
     }
 
+    /**
+     * set the spacing between the icon and the text.
+     *
+     * @param spacing the desired spacing. In pixel.
+     */
     public void setSpacing(int spacing) {
         if (mSpacing != spacing) {
             mSpacing = spacing;
@@ -488,6 +569,14 @@ public class IconDotTextView extends View {
         }
     }
 
+    /**
+     * set the margin around the dot. ONLY the margin between the dot and the boarder will work.
+     *
+     * @param left   the desired margin between the dot and the left boarder.
+     * @param top    the desired margin between the dot and the top boarder.
+     * @param right  the desired margin between the dot and the right boarder.
+     * @param bottom the desired margin between the dot and the bottom boarder.
+     */
     public void setDotMargin(int left, int top, int right, int bottom) {
         boolean needRefresh = false;
         if (mDotMarginLeft != left) {
@@ -512,6 +601,11 @@ public class IconDotTextView extends View {
         }
     }
 
+    /**
+     * set the size of the dot.
+     *
+     * @param size the desired size. In pixel.
+     */
     public void setDotSize(int size) {
         if (mDotConfig.getSize() != size) {
             mDotConfig.setSize(size);
@@ -519,15 +613,31 @@ public class IconDotTextView extends View {
         }
     }
 
+    /**
+     * set the color of the dot.
+     *
+     * @param color the desired color.
+     */
     public void setDotColor(@ColorInt int color) {
         mDotConfig.setColor(color);
         invalidate();
     }
 
+    /**
+     * set the number in the dot.
+     *
+     * @param number the number showing in the dot.
+     */
     public void setDotText(int number) {
         setDotText(String.valueOf(number));
     }
 
+    /**
+     * set the text in the dot.
+     *
+     * @param text the text showing in the dot. It will be added an ellipsis if the text
+     *             is too long.
+     */
     public void setDotText(CharSequence text) {
         if (mDotConfig.textConfig != null) {
             mDotConfig.textConfig.setText(text == null ? null : text.toString());
