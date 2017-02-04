@@ -9,15 +9,17 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.text.Layout;
 import android.text.StaticLayout;
+import android.text.TextDirectionHeuristics;
 import android.text.TextPaint;
 import android.text.TextUtils;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 /**
  * Created by assistne on 17/1/20.
  */
-// TODO: 17/1/20 限制文本长度, 过长省略
 public class TextConfig implements Config {
     private static final String TAG = "#TextConfig";
 
@@ -64,13 +66,75 @@ public class TextConfig implements Config {
         mTextPaint.setTextSize(mSize);
     }
 
+    @SuppressWarnings("unchecked")
     private void initLayout() {
         if (!TextUtils.isEmpty(mText)) {
+            final TextPaint paint = mTextPaint;
+            final CharSequence source = mText;
+            final int start = 0;
+            final int end = mText.length();
+            final Layout.Alignment alignment = Layout.Alignment.ALIGN_CENTER;
+            final float spacingAdd = 0f;
+            final float spacingMult = 1f;
+            final boolean includePad = true;
+            final TextUtils.TruncateAt truncateAt = TextUtils.TruncateAt.END;
             int outerWidth = getWidth();
-            mLayout = new StaticLayout(mText, 0, mText.length(),
-                    mTextPaint, outerWidth, Layout.Alignment.ALIGN_CENTER,
-                    1f, 0f, true,
-                    TextUtils.TruncateAt.MIDDLE, outerWidth);
+            if (getDesiredWidth() <= outerWidth) {
+                // 宽度足够容纳所有文字, 不需要设置行数限制
+                mLayout = new StaticLayout(source, start, end, paint, outerWidth, alignment,
+                        spacingMult, spacingAdd, includePad, truncateAt, outerWidth);
+            } else {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    // 使用builder限制行数为1, 并且尾部省略
+                    StaticLayout.Builder builder = StaticLayout.Builder.obtain(source,
+                            start, end, paint, outerWidth)
+                            .setAlignment(alignment)
+                            .setLineSpacing(spacingAdd, spacingMult)
+                            .setIncludePad(includePad)
+                            .setMaxLines(1)
+                            .setEllipsize(truncateAt);
+                    mLayout = builder.build();
+                } else {
+                    // SDK23之前利用映射使用隐藏的构造函数设置最大行数
+                    try {
+                        Constructor<?>[] constructorArr = StaticLayout.class.getConstructors();
+                        Constructor<StaticLayout> constructor = null;
+                        if (constructorArr != null && constructorArr.length != 0) {
+                            for (Constructor cons : constructorArr) {
+                                Class[] params = cons.getParameterTypes();
+                                if (params != null && params.length == 13) {// 参数数目为13的构造函数被隐藏
+                                    constructor = cons;
+                                    break;
+                                }
+                            }
+                        }
+                        if (constructor != null) {
+                            constructor.setAccessible(true);
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                                mLayout = constructor.newInstance(source, start, end, paint, outerWidth, alignment,
+                                        TextDirectionHeuristics.FIRSTSTRONG_LTR, spacingMult, spacingAdd,
+                                        includePad, truncateAt, outerWidth, 1);
+                            } else {
+                                // SDK18之前, 类TextDirectionHeuristics被隐藏, 因此需要使用反射获取静态变量FIRSTSTRONG_LTR
+                                Class<?> clazzTextDirectionHeuristics = Class.forName("TextDirectionHeuristics");
+                                Field fieldLTR = clazzTextDirectionHeuristics.getField("FIRSTSTRONG_LTR");
+                                fieldLTR.setAccessible(true);
+                                mLayout = constructor.newInstance(source, start, end, paint, outerWidth, alignment,
+                                        fieldLTR.get(null), spacingMult, spacingAdd,
+                                        includePad, truncateAt, outerWidth, 1);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (mLayout == null) {
+                            // 确保初始化完成
+                            mLayout = new StaticLayout(source, start, end, paint, outerWidth, alignment,
+                                    spacingMult, spacingAdd, includePad, truncateAt, outerWidth);
+                        }
+                    }
+                }
+            }
         } else {
             mLayout = null;
         }
