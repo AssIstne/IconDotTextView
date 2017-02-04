@@ -15,17 +15,18 @@ import android.support.annotation.Nullable;
 
 public class IconConfig implements Config {
     private static final String TAG = "#IconConfig";
-    private static final int DEFAULT_SIZE = 40;
+    private static int DEFAULT_SIZE;
 
-    private int size = DEFAULT_SIZE;
-    int width = DEFAULT_SIZE;
-    int height = DEFAULT_SIZE;
+    private int size;
+    int width;
+    int height;
     @Nullable
     Drawable icon;
     private int maxWidth = Integer.MAX_VALUE;
     private int maxHeight = Integer.MAX_VALUE;
 
     public IconConfig(@NonNull Context context, TypedArray typedArray) {
+        DEFAULT_SIZE  = IconDotTextView.sDefaultIconSize;
         if (typedArray != null) {
             width = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_icon_width, DEFAULT_SIZE);
             height = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_icon_height, DEFAULT_SIZE);

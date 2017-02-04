@@ -23,12 +23,12 @@ import java.util.Arrays;
 public class TextConfig implements Config {
     private static final String TAG = "#TextConfig";
 
-    private static final int DEFAULT_SIZE = 36;
+    private static int DEFAULT_SIZE;
     @ColorInt
     private static final int DEFAULT_COLOR = Color.argb(137, 0, 0, 0);// #000000 54%
     private static final int DEFAULT_MAX_WIDTH = Integer.MAX_VALUE;
 
-    private int mSize = DEFAULT_SIZE;
+    private int mSize;
     private int mMaxWidth = DEFAULT_MAX_WIDTH;
     private ColorStateList mColorStateList;
     private String mText;
@@ -37,6 +37,7 @@ public class TextConfig implements Config {
     private Layout mLayout;
 
     public TextConfig(TypedArray typedArray) {
+        DEFAULT_SIZE = IconDotTextView.sDefaultTextSize;
         if (typedArray != null) {
             mSize = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_textSize, DEFAULT_SIZE);
             mColorStateList = typedArray.getColorStateList(R.styleable.IconDotTextView_textColor);

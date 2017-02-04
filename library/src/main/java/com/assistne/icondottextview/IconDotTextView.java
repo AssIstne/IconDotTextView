@@ -68,6 +68,11 @@ public class IconDotTextView extends View {
     private IconConfig mIconConfig;
     private TextConfig mTextConfig;
 
+    static int sDefaultIconSize;
+    static int sDefaultDotSize;
+    static int sDefaultDotTextSize;
+    static int sDefaultTextSize;
+
     public IconDotTextView(Context context) {
         this(context, null);
     }
@@ -79,6 +84,12 @@ public class IconDotTextView extends View {
     @SuppressWarnings("ResourceType")
     public IconDotTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        Resources resources = context.getResources();
+        sDefaultIconSize = resources.getDimensionPixelSize(R.dimen.default_icon_size);
+        sDefaultDotSize = resources.getDimensionPixelSize(R.dimen.default_dot_size);
+        sDefaultDotTextSize = resources.getDimensionPixelSize(R.dimen.default_dot_text_size);
+        sDefaultTextSize = resources.getDimensionPixelSize(R.dimen.default_text_size);
+
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.IconDotTextView);
         mSpacing = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_spacing, DEFAULT_SPACING);
         @Direction int direction = typedArray.getInt(R.styleable.IconDotTextView_direction, COLUMN);

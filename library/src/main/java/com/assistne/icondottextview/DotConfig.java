@@ -11,19 +11,16 @@ import android.support.annotation.Nullable;
 /**
  * Created by assistne on 17/1/20.
  */
-// TODO: 17/1/20 文本长度
-// TODO: 17/1/20 区分有文字和无文字
-// TODO: 17/1/24 文本不能超出dot范围
 // TODO: 17/1/25 dot的颜色根据state变化?是否需要
 public class DotConfig implements Config {
-    private static final int DEFAULT_SIZE = 38;
+    private static int DEFAULT_SIZE;
     @ColorInt private static final int DEFAULT_COLOR = Color.rgb(211, 47, 47);// #D32F2F
-    private static final int DEFAULT_TEXT_SIZE = 25;
+    private static int DEFAULT_TEXT_SIZE;
     @ColorInt private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
 
-    private int mSize = DEFAULT_SIZE;
+    private int mSize;
     @ColorInt
-    private int mColor = DEFAULT_COLOR;
+    private int mColor;
 
     @Nullable
     TextConfig textConfig;
@@ -32,6 +29,8 @@ public class DotConfig implements Config {
     private int mMaxHeight = Integer.MAX_VALUE;
 
     public DotConfig(TypedArray typedArray) {
+        DEFAULT_SIZE = IconDotTextView.sDefaultDotSize;
+        DEFAULT_TEXT_SIZE = IconDotTextView.sDefaultDotTextSize;
         if (typedArray != null) {
             mSize = typedArray.getDimensionPixelSize(R.styleable.IconDotTextView_dot_size, DEFAULT_SIZE);
             mColor = typedArray.getColor(R.styleable.IconDotTextView_dot_color, DEFAULT_COLOR);
