@@ -116,7 +116,7 @@ public class TextConfig implements Config {
                                         includePad, truncateAt, outerWidth, 1);
                             } else {
                                 // SDK18之前, 类TextDirectionHeuristics被隐藏, 因此需要使用反射获取静态变量FIRSTSTRONG_LTR
-                                Class<?> clazzTextDirectionHeuristics = Class.forName("TextDirectionHeuristics");
+                                Class<?> clazzTextDirectionHeuristics = Class.forName("android.text.TextDirectionHeuristics");
                                 Field fieldLTR = clazzTextDirectionHeuristics.getField("FIRSTSTRONG_LTR");
                                 fieldLTR.setAccessible(true);
                                 mLayout = constructor.newInstance(source, start, end, paint, outerWidth, alignment,
